@@ -53,7 +53,8 @@ void Rasterizer::drawLine(int x0, int y0, int x1, int y1, simpleCanvas &C)
 
 	// the algorithm needs to work wether x0 < x1 or x1 < x0 and the same for y
 	int signdX = deltaX > 0 ? 1 : -1,
-		signdY = deltaY > 0 ? 1 : -1;
+		signdY = deltaY > 0 ? 1 : -1,
+		corrY = signdY > 0 ? 0 : -1; // needed to correct some display issues
 
 	int pxlX = x0, pxlY = y0; // the coordinates of the pixels we will color
 	float x, y; // the "real" value of x and y in the line equation
@@ -61,12 +62,12 @@ void Rasterizer::drawLine(int x0, int y0, int x1, int y1, simpleCanvas &C)
 
 	if (m == FLT_MAX) { // if we have a vertical line
 		for (pxlY = y0; pxlY != y1; pxlY += signdY) {
-			C.setPixel(pxlX, pxlY);
+			C.setPixel(pxlX, pxlY + corrY);
 		}
 
 	} else if (-1. <= m && m <= 1.) { // if we have a small slope
 		for (pxlX = x0; pxlX != x1; pxlX += signdX) {
-			y = m * pxlX + origin; // compute the "real" value of y, with m coef and origin
+			y = m * pxlX + origin; // compute the "real" value of y, with coef and origin
 
 			if (signdY * 2 * y > signdY * (2 * pxlY + 1)) { // if y needs to change, then do it
 				pxlY += signdY;
@@ -78,13 +79,13 @@ void Rasterizer::drawLine(int x0, int y0, int x1, int y1, simpleCanvas &C)
 
 	else { // if we have a big slope
 		for (pxlY = y0; pxlY != y1; pxlY += signdY) {
-			x = (pxlY - origin) / m; //compute the "real" value of x
+			x = (pxlY - origin) / m; // compute the "real" value of x
 
 			if (signdX * 2 * x > signdX * (2 * pxlX + signdX)) { // if x needs to change, then do it
 				pxlX += signdX;
 			}
 
-			C.setPixel(pxlX, pxlY);
+			C.setPixel(pxlX, pxlY + corrY);
 		}
 	}
 }
