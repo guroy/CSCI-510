@@ -9,6 +9,7 @@
 
 #include "Rasterizer.h"
 #include "simpleCanvas.h"
+#include <float.h>
 
 ///
 //
