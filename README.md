@@ -9,5 +9,5 @@ OpenGL Practical Homeworks developed on C++ using Visual Studio 2013 IDE.
 * **Contributors:**
   * Guillaume Roy, Computer Science and Software Engineering student - INSA Rennes
  
-## Lab 1 - Line Drawing
+##### Lab 1 - Line Drawing
 ![alt_tag](http://nodim.fr/host/course/cg/lab1.png)
