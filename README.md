@@ -1,4 +1,5 @@
-### CSCI-510
+CSCI-510
+--------
 
 ##### Rochester Institute of Technology
 OpenGL Practical Homeworks developed on C++ using Visual Studio 2013 IDE.
@@ -9,8 +10,8 @@ OpenGL Practical Homeworks developed on C++ using Visual Studio 2013 IDE.
 * **Contributors:**
   * Guillaume Roy, Computer Science and Software Engineering student - INSA Rennes
 
- Markups
--------
+Labs
+----
 ##### Lab 1 - Line Drawing
 * <a href="https://github.com/guroy/CSCI-510/tree/master/CSCI-510/Lab%201%20-%20Line%20Drawing">View Sources:</a>
 
