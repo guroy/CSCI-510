@@ -1,4 +1,4 @@
-CSCI-510
+CSCI-510 - Intro to Computer Graphics
 --------
 
 ##### Rochester Institute of Technology
