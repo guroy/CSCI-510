@@ -4,7 +4,7 @@
 //  Created by Joe Geigel on 11/30/11.
 //  Copyright 2011 Rochester Institute of Technology. All rights reserved.
 //
-//  Contributor:  YOUR_NAME_HERE
+//  Contributor:  Guillaume Roy
 //
 
 #include "Rasterizer.h"
