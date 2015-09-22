@@ -12,10 +12,8 @@ OpenGL Practical Homeworks developed on C++ using Visual Studio 2013 IDE.
 
 Labs
 ----
-##### Lab 1 - Line Drawing
+##### <a href="https://github.com/guroy/CSCI-510/tree/master/CSCI-510/Lab%201%20-%20Line%20Drawing">Lab 1: Line Drawing</a>
 * Implementation of the Midpoint Line Drawing algorithm. Providing source code of a setPixel() whose prototype is 
-  void drawLine( int x0, int y0, int x1, int y1, simpleCanvas &C );  
-
-* <a href="https://github.com/guroy/CSCI-510/tree/master/CSCI-510/Lab%201%20-%20Line%20Drawing">View Sources:</a>
+  void drawLine( int x0, int y0, int x1, int y1, simpleCanvas &C );
 
 ![alt_tag](http://nodim.fr/host/course/cg/lab1.png)
