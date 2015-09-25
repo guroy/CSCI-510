@@ -8,7 +8,7 @@ OpenGL Practical Homeworks developed on C++ using Visual Studio 2013 IDE.
 * **Instructor:** Reynold Bailey
 * **Year:** 2015
 * **Contributors:**
-  * Guillaume Roy, Computer Science and Software Engineering student - INSA Rennes
+  * <a href="https://github.com/guroy">Guillaume Roy</a>, Computer Science and Software Engineering student - INSA Rennes
 
 Labs
 ----
