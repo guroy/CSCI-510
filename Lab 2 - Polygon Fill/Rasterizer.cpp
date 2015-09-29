@@ -47,7 +47,7 @@ Rasterizer::Rasterizer (int n) : n_scanlines (n)
 void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 {
     // YOUR IMPLEMENTATION GOES HERE
-
+	int xMax = *max_element(x, x + sizeof(x)); // define the right bound of the polygon
 
 	/*
 		Initializing All of the Edges
@@ -62,7 +62,7 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 	} Bucket ;
 	
 	// we allocate an Array that will contain all the Buckets of the polygon
-	vector<Bucket> *globalEdgeTable = new vector<Bucket>();
+	vector<Bucket> globalEdgeTable;
 
 	for (int i = 0; i < n - 1; i++) {
 		Bucket b;
@@ -74,12 +74,12 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 			(x[i] - x[i + 1]) / (y[i] - y[i + 1]) : FLT_MAX;
 		// we don't need to store horizontal lines. As we have the 
 		if (b.inv_m != FLT_MAX)
-			globalEdgeTable->push_back(b);
+			globalEdgeTable.push_back(b);
 	}
 
 	// here is the number of buckets we truly keep after having removed the horizontal edges
-	n = globalEdgeTable->size();
-	
+	n = globalEdgeTable.size();
+	//
 
 	/*
 		Initializing the Global Edge Table
@@ -87,16 +87,17 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 
 	Bucket b;
 
-	// we need to sort the buckets...
+	// we need to sort the buckets. It's not the optimum way to do this,
+	// but as the numbre of values is small, it does not matter 
 	for (int i = 0; i < n - 1; i++) {
-		for (int j = i; j < n - 1; j++) {
+		for (int j = i + 1; j < n; j++) {
 			// sort by yMin...
-			if (globalEdgeTable->at(j).yMin <= globalEdgeTable->at(i).yMin) {
+			if (globalEdgeTable.at(j).yMin <= globalEdgeTable.at(i).yMin) {
 				// or by xVal if yMin is the same
-				if (globalEdgeTable->at(j).yMin < globalEdgeTable->at(i).yMin || globalEdgeTable->at(j).xVal < globalEdgeTable->at(i).xVal) {
-					b = globalEdgeTable->at(j);
-					globalEdgeTable->at(j) = globalEdgeTable->at(i);
-					globalEdgeTable->at(i) = b;
+				if (globalEdgeTable.at(j).yMin < globalEdgeTable.at(i).yMin || globalEdgeTable.at(j).xVal < globalEdgeTable.at(i).xVal) {
+					b = globalEdgeTable.at(j);
+					globalEdgeTable.at(j) = globalEdgeTable.at(i);
+					globalEdgeTable.at(i) = b;
 				}
 			}
 		}
@@ -107,47 +108,86 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 		Initializing parity
 	*/
 
-	int parity = 0;
+	// we create this enum to make the code more 'readable'
+	enum {
+		EVEN, ODD
+	};
+
+	int parity = EVEN;
 
 
 	/*
 		Initializing the Scan-Line 
 	*/
 
-	int scanLine = globalEdgeTable->at(0).yMin;
+	int scanLine = globalEdgeTable.at(0).yMin;
 
 
 	/*
 		Initializing the Active Edge Table
 	*/
 
-	vector<Bucket> *activeEdgeTable = new vector<Bucket>();
+	vector<Bucket> activeEdgeTable;
 
-	/*
-	Since the global edge table is ordered on minimum y and x values,
-	search, in order, through the global edge table and, for each edge 
-	found having a minimum y value equal to the current scan-line, append 
-	the edge information for the maximum y value, x value, and 1/m to the 
-	active edge table. Do this until an edge is found with a minimum y 
-	value greater than the scan line value. The active edge table will 
-	now contain ordered edges of those edges that are being filled as such: 
-	*/
+	int maxLine = globalEdgeTable.at(n-1).yMax;
 
-	int maxLine = globalEdgeTable->at(n-1).yMax;
 
 	for (int line = scanLine; line < maxLine; line++) {
-		for (int i = 0; i < n - 1; i++) {
-			b = globalEdgeTable->at(i);
+		// for each scanLine, we want to retrieve every bucket whose yMin = scanLine
+		int i = 0;
+		while (i < n - 1) {
+			b = globalEdgeTable.at(i);
 			if (b.yMin == scanLine) {
-				activeEdgeTable->push_back(b);
-				globalEdgeTable->erase(globalEdgeTable->begin() + i);
+				// we add the bucket to the active edge table, and remove it from the global table
+				activeEdgeTable.push_back(b);
+				globalEdgeTable.erase(globalEdgeTable.begin() + i);
+				n--;
+			} else {
+				i++;
 			}
 		}
-		free(activeEdgeTable);
-		activeEdgeTable = new vector<Bucket>();
+
+	//	/*
+	//		Filling the Polygon
+	//	*/
+
+	//	/*
+	//	Filling the polygon involves deciding whether or not to draw pixels, adding to and 
+	//	removing edges from the active edge table, and updating x values for the next scan-line.
+	//	Starting with the initial scan-line, until the active edge table is empty, do the following:
+	//	1. Draw all pixels from the x value of odd to the x value of even parity edge pairs.
+	//	2. Increase the scan-line by 1.
+	//	3. Remove any edges from the active edge table for which the maximum y value is equal to the scan_line.
+	//	4. Update the x value for for each edge in the active edge table using the formula x1 = x0 + 1/m. 
+	//	(This is based on the line formula and the fact that the next scan-line equals the old scan-line plus one.)
+	//	5. Remove any edges from the global edge table for which the minimum y value is equal to the scan-line 
+	//	and place them in the active edge table.
+	//	6. Reorder the edges in the active edge table according to increasing x value. This is done in case edges have crossed.
+	//	*/
+	////	int nbActiveEdges = activeEdgeTable->size(),
+	////		currentEdge = 0;
+
+	////	for (int scanX = 0; scanX < xMax; scanX++) {
+	////		
+	////		if (scanX = activeEdgeTable->at(currentEdge).xVal) {
+	////			parity = (parity == EVEN) ? ODD : EVEN;
+	////			currentEdge++;
+	////			Bucket b = activeEdgeTable->at(currentEdge);
+	////			Bucket bUpdated = { b.yMin, b.yMax, b.xVal + b.inv_m, b.inv_m };
+	////			activeEdgeTable->at(currentEdge) = bUpdated;
+	////		}	
+
+	////		if (parity == ODD) {
+	////			C.setPixel(scanX, line);
+	////		}
+	////	}
+
+
+	//	//free(activeEdgeTable);
+	//	//activeEdgeTable = new vector<Bucket>();
 	}
 
 
-	free(globalEdgeTable);
-	free(activeEdgeTable);
+	//free(&globalEdgeTable);
+	//free(&activeEdgeTable);
 }
