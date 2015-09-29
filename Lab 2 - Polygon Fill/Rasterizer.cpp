@@ -69,7 +69,7 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 		// let's initialize the current bucket
 		b.yMin = min(y[i], y[i + 1]);
 		b.yMax = max(y[i], y[i + 1]);
-		b.xVal = b.yMin == y[i] ? x[i] : x[i + 1];
+		b.xVal = (float) (b.yMin == y[i] ? x[i] : x[i + 1]);
 		b.inv_m = b.yMax - b.yMin != 0 ?
 			(x[i] - x[i + 1]) / (y[i] - y[i + 1]) : FLT_MAX;
 		// we don't need to store horizontal lines. As we have the 
@@ -138,7 +138,8 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 		while (i < n - 1) {
 			b = globalEdgeTable.at(i);
 			if (b.yMin == scanLine) {
-				// we add the bucket to the active edge table, and remove it from the global table
+				// Remove any edges from the global edge table for which the minimum y value
+				// is equal to the scan-line and place them in the active edge table
 				activeEdgeTable.push_back(b);
 				globalEdgeTable.erase(globalEdgeTable.begin() + i);
 				n--;
@@ -147,47 +148,39 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 			}
 		}
 
-	//	/*
-	//		Filling the Polygon
-	//	*/
+		/*
+			Filling the Polygon
+		*/
 
-	//	/*
-	//	Filling the polygon involves deciding whether or not to draw pixels, adding to and 
-	//	removing edges from the active edge table, and updating x values for the next scan-line.
-	//	Starting with the initial scan-line, until the active edge table is empty, do the following:
-	//	1. Draw all pixels from the x value of odd to the x value of even parity edge pairs.
-	//	2. Increase the scan-line by 1.
-	//	3. Remove any edges from the active edge table for which the maximum y value is equal to the scan_line.
-	//	4. Update the x value for for each edge in the active edge table using the formula x1 = x0 + 1/m. 
-	//	(This is based on the line formula and the fact that the next scan-line equals the old scan-line plus one.)
-	//	5. Remove any edges from the global edge table for which the minimum y value is equal to the scan-line 
-	//	and place them in the active edge table.
-	//	6. Reorder the edges in the active edge table according to increasing x value. This is done in case edges have crossed.
-	//	*/
-	////	int nbActiveEdges = activeEdgeTable->size(),
-	////		currentEdge = 0;
+		/*
 
-	////	for (int scanX = 0; scanX < xMax; scanX++) {
-	////		
-	////		if (scanX = activeEdgeTable->at(currentEdge).xVal) {
-	////			parity = (parity == EVEN) ? ODD : EVEN;
-	////			currentEdge++;
-	////			Bucket b = activeEdgeTable->at(currentEdge);
-	////			Bucket bUpdated = { b.yMin, b.yMax, b.xVal + b.inv_m, b.inv_m };
-	////			activeEdgeTable->at(currentEdge) = bUpdated;
-	////		}	
+		3. Remove any edges from the active edge table for which the maximum y value is equal to the scan_line.
+		6. Reorder the edges in the active edge table according to increasing x value. This is done in case edges have crossed.*/
 
-	////		if (parity == ODD) {
-	////			C.setPixel(scanX, line);
-	////		}
-	////	}
+		int nbActiveEdges = activeEdgeTable.size(),
+			currentEdge = 0;
 
+		for (int scanX = 10; scanX <= xMax; scanX++) {
+			if (scanX == activeEdgeTable.at(currentEdge).xVal) {
+				parity = (parity == EVEN) ? ODD : EVEN;
+				
+				// Update the x value for for each edge in the active 
+				// edge table using the formula x1 = x0 + 1/m
+				Bucket b = activeEdgeTable.at(currentEdge);
+				Bucket bUpdated = { b.yMin, b.yMax, b.xVal + b.inv_m, b.inv_m };
+				activeEdgeTable.at(currentEdge) = bUpdated;
 
-	//	//free(activeEdgeTable);
-	//	//activeEdgeTable = new vector<Bucket>();
+				if (currentEdge++ == nbActiveEdges) {
+					break;
+				}
+			}	
+
+			// Draw all pixels from the x value of odd to the x value of even parity edge pairs
+			if (parity == ODD) {
+				C.setPixel(scanX, line);
+			}
+		}
+	
+		//activeEdgeTable.clear();
 	}
-
-
-	//free(&globalEdgeTable);
-	//free(&activeEdgeTable);
 }
