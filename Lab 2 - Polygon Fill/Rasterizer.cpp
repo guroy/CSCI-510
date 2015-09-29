@@ -64,14 +64,21 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 	// we allocate an Array that will contain all the Buckets of the polygon
 	vector<Bucket> globalEdgeTable;
 
-	for (int i = 0; i < n - 1; i++) {
-		Bucket b;
+	// A temporary bucket we'll use in loops
+	Bucket b;
+
+	// explanation for the use of modulo :
+	// If the first and the last bucket have a infinite value for 1/m, no bucket would be stored
+	// For that reason, we try to create a bucket with the edge AB where A(x0,y0) and B(xn,yn)
+	// We thereby use modulo n so as not be out of bounds, as n has a value > the last index at 
+	// the end of the loop.
+	for (int i = 0; i < n; i++) {	
 		// let's initialize the current bucket
-		b.yMin = min(y[i], y[i + 1]);
-		b.yMax = max(y[i], y[i + 1]);
-		b.xVal = (float) (b.yMin == y[i] ? x[i] : x[i + 1]);
+		b.yMin = min(y[i % n], y[(i + 1) % n]);
+		b.yMax = max(y[i % n], y[(i + 1) % n]);
+		b.xVal = (float)(b.yMin == y[i % n] ? x[i % n] : x[(i + 1) % n]);
 		b.inv_m = b.yMax - b.yMin != 0 ?
-			(float ) (x[i] - x[i + 1]) / (float) (y[i] - y[i + 1]) : FLT_MAX;
+			(float)(x[i % n] - x[(i + 1) % n]) / (float)(y[i % n] - y[(i + 1) % n]) : FLT_MAX;
 		// we don't need to store horizontal lines. As we have the 
 		if (b.inv_m != FLT_MAX)
 			globalEdgeTable.push_back(b);
@@ -79,13 +86,11 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 
 	// here is the number of buckets we truly keep after having removed the horizontal edges
 	n = globalEdgeTable.size();
-	//
 
+	
 	/*
 		Initializing the Global Edge Table
 	*/
-
-	Bucket b;
 
 	// we need to sort the buckets. It's not the optimum way to do this,
 	// but as the numbre of values is small, it does not matter 
@@ -132,57 +137,38 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 	int maxLine = globalEdgeTable.at(n-1).yMax;
 
 
-	for (int line = scanLine; line < scanLine+4; line++) {
+	for (int line = scanLine; line < maxLine; line++) {
 		parity = EVEN;
 		// for each scanLine, we want to retrieve every bucket whose yMin = scanLine
 		int i = 0;
 		while (i < n) {
 			b = globalEdgeTable.at(i);
-			if (b.yMin == scanLine) {
+			if (b.yMin == line) {
 				// Remove any edges from the global edge table for which the minimum y value
 				// is equal to the scan-line and place them in the active edge table
 				activeEdgeTable.push_back(b);
 				globalEdgeTable.erase(globalEdgeTable.begin() + i);
 				n--;
-			}
-			else if (b.yMax == scanLine) {
-				//Remove any edges from the active edge table for which
-				//the maximum y value is equal to the scan_line.
-				activeEdgeTable.erase(activeEdgeTable.begin() + i);
 			} else {
 				i++;
 			}
 		}
 
-
-		/*
-			Filling the Polygon
-		*/
+		i = 0;
 
 		int nbActiveEdges = activeEdgeTable.size(),
 			currentEdge = 0;
 
-		for (int scanX = 0; scanX <= xMax; scanX++) {
-
-			if (scanX == ((parity == ODD) ? ceil(activeEdgeTable.at(currentEdge).xVal) : round(activeEdgeTable.at(currentEdge).xVal))) {
-				// We change parity
-				parity = (parity == EVEN) ? ODD : EVEN;
-
-				// We want to be sure that we try every edges. Even when multiple buckets have
-				// the same xVal, which is why we use a while loop
-				while (currentEdge < nbActiveEdges && scanX == ((parity == ODD) ? ceil(activeEdgeTable.at(currentEdge).xVal) : round(activeEdgeTable.at(currentEdge).xVal))) {
-					// Update the x value for for each edge in the active 
-					// edge table using the formula x1 = x0 + 1/m
-					Bucket b = activeEdgeTable.at(currentEdge);
-					Bucket bUpdated = { b.yMin, b.yMax, b.xVal + b.inv_m, b.inv_m };
-					activeEdgeTable.at(currentEdge) = bUpdated;
-
-					currentEdge++;
-				}
+		// Remove any edges from the active edge table for which
+		// the maximum y value is equal to the scan_line. 
+		while (i < nbActiveEdges) {
+			b = activeEdgeTable.at(i);
+			if (b.yMax == line) {
+				activeEdgeTable.erase(activeEdgeTable.begin() + i);
+				nbActiveEdges--;
 			}
-			// Draw all pixels from the x value of odd to the x value of even parity edge pairs
-			if (parity == ODD) {
-				C.setPixel(scanX, line);
+			else {
+				i++;
 			}
 		}
 
@@ -195,6 +181,33 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 					activeEdgeTable.at(j) = activeEdgeTable.at(i);
 					activeEdgeTable.at(i) = b;
 				}
+			}
+		}
+
+		/*
+			Filling the Polygon
+		*/
+
+		for (int scanX = 0; scanX <= xMax && currentEdge < nbActiveEdges; scanX++) {
+			if (scanX == round(activeEdgeTable.at(currentEdge).xVal)) {
+				// We change parity
+				parity = (parity == EVEN) ? ODD : EVEN;
+
+				// We want to be sure that we try every edges. Even when multiple buckets have
+				// the same xVal, which is why we use a while loop
+				while (currentEdge < nbActiveEdges && scanX == round(activeEdgeTable.at(currentEdge).xVal)) {
+					// Update the x value for for each edge in the active 
+					// edge table using the formula x1 = x0 + 1/m
+					Bucket b = activeEdgeTable.at(currentEdge);
+					Bucket bUpdated = { b.yMin, b.yMax, b.xVal + b.inv_m, b.inv_m };
+					activeEdgeTable.at(currentEdge) = bUpdated;
+
+					currentEdge++;
+				}
+			}
+			// Draw all pixels from the x value of odd to the x value of even parity edge pairs
+			if (parity == ODD) {
+				C.setPixel(scanX, line);
 			}
 		}
 	}
