@@ -56,7 +56,7 @@ int main (int argc, char *argv[])
 	R.drawPolygon(6, x, y, T);
 
     // ########### TEAPOT START ###########
-    //// BASE
+    // BASE
     //x[0] = 140;  y[0] = 40;
     //x[1] = 300;  y[1] = 40;
     //x[2] = 280;  y[2] = 60;
