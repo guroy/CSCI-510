@@ -13,6 +13,8 @@
 
 #include "Rasterizer.h"
 #include "simpleCanvas.h"
+#include <float.h>
+#include <math.h>
 
 using namespace std;
 
@@ -49,18 +51,11 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
     // YOUR IMPLEMENTATION GOES HERE
 	int xMax = *max_element(x, x + sizeof(x)); // define the right bound of the polygon
 
+
 	/*
 		Initializing All of the Edges
 	*/
-	
-	// we define a Bucket structure to store, for each edge, the following values
-	typedef struct {
-		int yMin, // The minimum y value of the two vertices
-			yMax; // The maximum y value of the two vertices
-		float xVal, // The x value associated with the minimum y value
-			  inv_m; // 1/m, the inverse of the slope
-	} Bucket ;
-	
+		
 	// we allocate an Array that will contain all the Buckets of the polygon
 	vector<Bucket> globalEdgeTable;
 

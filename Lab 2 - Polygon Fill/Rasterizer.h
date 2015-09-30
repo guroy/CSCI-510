@@ -41,6 +41,14 @@ public:
     ///
     void drawPolygon(int n, int x[], int y[], simpleCanvas &C);
 
+	// we define a Bucket structure to store, 
+	// for each edge, the following values
+	typedef struct {
+		int yMin, // The minimum y value of the two vertices
+			yMax; // The maximum y value of the two vertices
+		float xVal, // The x value associated with the minimum y value
+			  inv_m; // 1/m, the inverse of the slope
+	} Bucket ;
 private:
     ///
     // number of scanlines
