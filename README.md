@@ -21,3 +21,5 @@ Labs
 ##### <a href="https://github.com/guroy/CSCI-510/tree/master/Lab%202%20-%20Polygon%20Fill">Lab 2: Polygon Fill</a>
 * Implementation of the scanline polygon fill algorithm. Providing source code of a drawPolygon() method whose prototype is:
 ```void drawPolygon( int n, int x[], int y[], simpleCanvas &C );```
+
+![alt_tag](http://nodim.fr/host/course/cg/lab2.png)
