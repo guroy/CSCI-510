@@ -137,7 +137,7 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 	int maxLine = globalEdgeTable.at(n-1).yMax;
 
 
-	for (int line = scanLine; line < maxLine; line++) {
+	for (int line = scanLine; line <= maxLine; line++) {
 		parity = EVEN;
 		// for each scanLine, we want to retrieve every bucket whose yMin = scanLine
 		int i = 0;
@@ -158,19 +158,6 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 
 		int nbActiveEdges = activeEdgeTable.size(),
 			currentEdge = 0;
-
-		// Remove any edges from the active edge table for which
-		// the maximum y value is equal to the scan_line. 
-		while (i < nbActiveEdges) {
-			b = activeEdgeTable.at(i);
-			if (b.yMax == line) {
-				activeEdgeTable.erase(activeEdgeTable.begin() + i);
-				nbActiveEdges--;
-			}
-			else {
-				i++;
-			}
-		}
 
 		// Reorder the edges in the active edge table according to
 		// increasing x value. This is done in case edges have crossed
@@ -208,6 +195,19 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 			// Draw all pixels from the x value of odd to the x value of even parity edge pairs
 			if (parity == ODD) {
 				C.setPixel(scanX, line);
+			}
+		}
+
+		// Remove any edges from the active edge table for which
+		// the maximum y value is equal to the scan_line. 
+		while (i < nbActiveEdges) {
+			b = activeEdgeTable.at(i);
+			if (b.yMax == line) {
+				activeEdgeTable.erase(activeEdgeTable.begin() + i);
+				nbActiveEdges--;
+			}
+			else {
+				i++;
 			}
 		}
 	}

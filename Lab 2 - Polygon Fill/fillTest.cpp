@@ -143,7 +143,7 @@ int main (int argc, char *argv[])
     // ########## BORDERS ###############
 
     // SQUARE BOTTOM LEFT
-    x[0] = 0;    y[0] = 0;
+	x[0] = 0;    y[0] = 0;
     x[1] = 0;    y[1] = 20;
     x[2] = 20;   y[2] = 20;
     x[3] = 20;   y[3] = 0;
