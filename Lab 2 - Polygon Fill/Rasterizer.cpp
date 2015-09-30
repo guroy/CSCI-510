@@ -188,7 +188,8 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 					Bucket b = activeEdgeTable.at(currentEdge);
 					Bucket bUpdated = { b.yMin, b.yMax, b.xVal + b.inv_m, b.inv_m };
 					activeEdgeTable.at(currentEdge) = bUpdated;
-
+					// We need to draw the last pixel of the bucket
+					C.setPixel(scanX, line);
 					currentEdge++;
 				}
 			}
