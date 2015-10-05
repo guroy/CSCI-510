@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab 1 - Line Drawing", "Lab
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab 2 - Polygon Fill", "Lab 2 - Polygon Fill\Lab 2 - Polygon Fill.vcxproj", "{1A535A38-35FC-4AF2-83C6-B82308676AFE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab 3 - Clipping", "Lab 3 - Clipping\Lab 3 - Clipping.vcxproj", "{E62C7BFF-D497-437B-ADAD-656B1F967C2C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,6 +23,10 @@ Global
 		{1A535A38-35FC-4AF2-83C6-B82308676AFE}.Debug|Win32.Build.0 = Debug|Win32
 		{1A535A38-35FC-4AF2-83C6-B82308676AFE}.Release|Win32.ActiveCfg = Release|Win32
 		{1A535A38-35FC-4AF2-83C6-B82308676AFE}.Release|Win32.Build.0 = Release|Win32
+		{E62C7BFF-D497-437B-ADAD-656B1F967C2C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E62C7BFF-D497-437B-ADAD-656B1F967C2C}.Debug|Win32.Build.0 = Debug|Win32
+		{E62C7BFF-D497-437B-ADAD-656B1F967C2C}.Release|Win32.ActiveCfg = Release|Win32
+		{E62C7BFF-D497-437B-ADAD-656B1F967C2C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
