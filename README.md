@@ -23,3 +23,7 @@ Labs
 ```void drawPolygon( int n, int x[], int y[], simpleCanvas &C );```
 
 ![alt_tag](http://nodim.fr/host/course/cg/lab2.png)
+
+##### <a href="https://github.com/guroy/CSCI-510/tree/master/Lab%203%20-%20Clipping">Lab 3: Clipping</a>
+* Implementation of the Sutherland-Hodgman Polygon Clipper algorithm. Providing source code of a clipPolygon() method whose prototype is:
+```void drawPolygon( int n, int x[], int y[], simpleCanvas &C );```
