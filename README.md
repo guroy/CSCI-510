@@ -27,3 +27,5 @@ Labs
 ##### <a href="https://github.com/guroy/CSCI-510/tree/master/Lab%203%20-%20Clipping">Lab 3: Clipping</a>
 * Implementation of the Sutherland-Hodgman Polygon Clipper algorithm. Providing source code of a clipPolygon() method whose prototype is:
 ```int clipPolygon( int in, const float inx[], const float iny[], float outx[], float outy[], float x0, float y0, float x1, float y1 );```
+
+![alt_tag](http://nodim.fr/host/course/cg/lab3.png)
