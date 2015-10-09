@@ -2,7 +2,7 @@ CSCI-510 - Intro to Computer Graphics
 --------
 
 ##### Rochester Institute of Technology
-OpenGL Practical Homeworks developed on C++ using Visual Studio 2013 IDE.
+SFML & OpenGL Practical Homeworks developed on C++ using Visual Studio 2013 IDE.
 
 * **Course Title:** CSCI-510 Introduction to Computer Graphics
 * **Instructor:** Reynold Bailey
