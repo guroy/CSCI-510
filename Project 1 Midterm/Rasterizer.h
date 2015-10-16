@@ -54,8 +54,6 @@ private:
     // number of scanlines
     ///
     int n_scanlines;
-public:
-	int drawPolygon();
 };
 
 
