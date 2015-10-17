@@ -25,10 +25,10 @@
 ///
 
 class cgCanvas : public simpleCanvas {
-	vector<sf::ConvexShape> polys;
+	vector<sf::ConvexShape> polys; // a vector of polygons, as the polys attribute from simpleCanvas is private, we need to create our own.
 
 public:
-	static int polyID;
+	static int polyID; // ID of next polygon that one will add
 
     ///
     // Constructor

@@ -9,6 +9,7 @@
 
 #include "cgCanvas.h"
 #include "Rasterizer.h"
+#include "cmatrix"
 
 ///
 // Simple wrapper class for midterm assignment
@@ -55,7 +56,7 @@ int cgCanvas::addPoly (const float x[], const float y[], int n)
 	// sf::ConvexShape & sf::Vector2 are 2 objects of the SFML library
 	sf::ConvexShape newPoly = sf::ConvexShape(n); // Create a Polygon
 	for (int i = 0; i < n; i++) {
-		newPoly.setPoint(i, sf::Vector2<float>(x[i], y[i])); // Set the vertices
+		newPoly.setPoint(i, sf::Vector2<float>(x[i], y[i])); // Set the vertices, vertex by vertex
 	}
 
 	polys.push_back(newPoly); // add the new polygon to the vector of polygons contained in simpleCanvas
@@ -75,7 +76,13 @@ int cgCanvas::addPoly (const float x[], const float y[], int n)
 void cgCanvas::drawPoly (int polyID)
 {
     // YOUR IMPLEMENTATION HERE
+	// We want to use the method void drawPolygon(int n, int x[], int y[], simpleCanvas &C);
+	// contained in the Rasterizer class. So we need to create a rasterizer, and set n, x, y and C values.
+
+	// set n
 	int n = polys.at(polyID).getPointCount();
+	
+	// set x[] and y[]
 	int *x = new int[n],
 		*y = new int[n];
 
@@ -87,11 +94,15 @@ void cgCanvas::drawPoly (int polyID)
 		y[i] = tmpPoint.y;
 	}
 
+	// set &C
+	simpleCanvas *C = this;
+
 	Rasterizer rasterizer = Rasterizer(n);
 
-	rasterizer.drawPolygon(n, x, y, *this);
+	// draw
+	rasterizer.drawPolygon(n, x, y, *C);
 
-	delete[] x, y;
+	delete[] x, y; // dynamic allocation
 }
 
 ///
@@ -101,6 +112,7 @@ void cgCanvas::drawPoly (int polyID)
 void cgCanvas::clearTransform()
 {
     // YOUR IMPLEMENTATION HERE
+
 }
 
 ///
