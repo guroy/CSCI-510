@@ -29,3 +29,6 @@ Labs
 ```int clipPolygon( int in, const float inx[], const float iny[], float outx[], float outy[], float x0, float y0, float x1, float y1 );```
 
 ![alt_tag](http://nodim.fr/host/course/cg/lab3.png)
+
+##### <a href="https://github.com/guroy/CSCI-510/tree/master/Project%201%20Midterm">Project 1 Midterm</a>
+* Implementation of the complete 2D pipeline as presented in class using routines written for previous assignments. This project is in lieu of a traditional midterm exam. 
