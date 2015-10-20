@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab 3 - Clipping", "Lab 3 -
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project 1 Midterm", "Project 1 Midterm\Project 1 Midterm.vcxproj", "{44411CA6-1CA3-4C53-B794-010B5F2CC68E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hello, OpenGL!", "Hello, OpenGL!\Hello, OpenGL!.vcxproj", "{E530DF40-8E74-457E-86EF-09BE7FE8A187}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -33,6 +35,10 @@ Global
 		{44411CA6-1CA3-4C53-B794-010B5F2CC68E}.Debug|Win32.Build.0 = Debug|Win32
 		{44411CA6-1CA3-4C53-B794-010B5F2CC68E}.Release|Win32.ActiveCfg = Release|Win32
 		{44411CA6-1CA3-4C53-B794-010B5F2CC68E}.Release|Win32.Build.0 = Release|Win32
+		{E530DF40-8E74-457E-86EF-09BE7FE8A187}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E530DF40-8E74-457E-86EF-09BE7FE8A187}.Debug|Win32.Build.0 = Debug|Win32
+		{E530DF40-8E74-457E-86EF-09BE7FE8A187}.Release|Win32.ActiveCfg = Release|Win32
+		{E530DF40-8E74-457E-86EF-09BE7FE8A187}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

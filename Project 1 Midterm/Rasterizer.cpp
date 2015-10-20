@@ -213,21 +213,6 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 			}
 		}
 
-		if (line == maxLine) {
-			i = 0;
-
-			// Remove any edges from the active edge table for which
-			// the maximum y value is equal to the scan_line. 
-			while (i < nbActiveEdges) {
-				b = activeEdgeTable.at(i);
-				if (b.yMax == line) {
-					activeEdgeTable.erase(activeEdgeTable.begin() + i);
-					nbActiveEdges--;
-				}
-				else {
-					i++;
-				}
-			}
-		}
+		
 	}
 }

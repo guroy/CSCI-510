@@ -11,7 +11,12 @@
 #define _CGCANVAS_H_
 
 #include "simpleCanvas.h"
-#include "Rasterizer.h"
+#include "cmatrix"
+
+
+// We may want use a typedef statement to simplify the declaration of matrix objects in the program. 
+typedef techsoft::matrix<float> Matrix;
+
 
 ///
 // Simple wrapper class for midterm assignment
@@ -26,6 +31,8 @@
 
 class cgCanvas : public simpleCanvas {
 	vector<sf::ConvexShape> polys; // a vector of polygons, as the polys attribute from simpleCanvas is private, we need to create our own.
+	Matrix currentTransform;
+	int clipWindow[4]; // bottom, top, left, right
 
 public:
 	static int polyID; // ID of next polygon that one will add
