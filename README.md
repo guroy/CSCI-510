@@ -37,3 +37,5 @@ Labs
 
 ##### <a href="https://github.com/guroy/CSCI-510/tree/master/Project%201%20Midterm">Project 1 Midterm</a>
 * Implementation of the complete 2D pipeline as presented in class using routines written for previous assignments. This project is in lieu of a traditional midterm exam. 
+
+![alt_tag](http://mycenes.m.y.pic.centerblog.net/s41qlzky.gif)
