@@ -202,13 +202,15 @@ void Rasterizer::drawPolygon(int n, int x[], int y[], simpleCanvas &C)
 					Bucket bUpdated = { b.yMin, b.yMax, b.xVal + b.inv_m, b.inv_m };
 					activeEdgeTable.at(currentEdge) = bUpdated;
 					// We need to draw the last pixel of the bucket
-					C.setPixel(scanX, line);
+					if (scanX < xMax && line < maxLine) {
+						C.setPixel(scanX, line);
+					}
 					currentEdge++;
 					//parity = (parity == EVEN) ? ODD : EVEN;
 				}
 			}
 			// Draw all pixels from the x value of odd to the x value of even parity edge pairs
-			if (parity == ODD) {
+			if (parity == ODD && scanX < xMax && line < maxLine) {
 				C.setPixel(scanX, line);
 			}
 		}

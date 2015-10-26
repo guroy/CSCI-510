@@ -11,6 +11,7 @@
 #define _CGCANVAS_H_
 
 #include "simpleCanvas.h"
+#include "clipper.h"
 #include "cmatrix"
 
 
@@ -32,7 +33,8 @@ typedef techsoft::matrix<float> Matrix;
 class cgCanvas : public simpleCanvas {
 	vector<sf::ConvexShape> polys; // a vector of polygons, as the polys attribute from simpleCanvas is private, we need to create our own.
 	Matrix currentTransform;
-	int clipWindow[4]; // bottom, top, left, right
+	float clipWindow[4]; // bottom, top, left, right
+	int viewWindow[4]; // bottom, top, left, right
 
 public:
 	static int polyID; // ID of next polygon that one will add

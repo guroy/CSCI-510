@@ -40,10 +40,6 @@ cgCanvas::cgCanvas(int w, int h) : simpleCanvas (w,h)
 {
     // YOUR IMPLEMENTATION HERE if you need to modify the constructor
 	clearTransform(); // by default we set the transformation matrix to ID
-	clipWindow[0] = 0;
-	clipWindow[1] = h;
-	clipWindow[2] = 0;
-	clipWindow[3] = w;
 }
 
 ///
@@ -83,56 +79,70 @@ int cgCanvas::addPoly (const float x[], const float y[], int n)
 // @param polyID - the ID of the polygon to be drawn
 ///
 
-void cgCanvas::drawPoly (int polyID)
+void cgCanvas::drawPoly(int polyID)
 {
-    // YOUR IMPLEMENTATION HERE
+	// YOUR IMPLEMENTATION HERE
 	// We want to use the method void drawPolygon(int n, int x[], int y[], simpleCanvas &C);
 	// contained in the Rasterizer class. So we need to create a rasterizer, and set n, x, y and C values.
 
 	// set n
 	int n = polys.at(polyID).getPointCount();
-	
-	// set x[] and y[] and apply transformation
-	float *x = new float[n],
-		  *y = new float[n];
 
-	sf::Vector2<float> coord;
+
+	// set inx[] and iny[] and apply transformation
+	float *inx = new float[n],
+		  *iny = new float[n];
 
 	Matrix m;
+	sf::Vector2<float> coord;
 
 	for (int i = 0; i < n; i++) {
 		coord = sf::Vector2<float>(polys.at(polyID).getPoint(i));
 		// compute the coordinates of the point after the transformation
 		m = Matrix(3, 1, { coord.x, coord.y, 1 });
 		m = currentTransform * m;
-		x[i] = m[0][0];
-		y[i] = m[1][0];
+		inx[i] = m[0][0];
+		iny[i] = m[1][0];
 	}
 
-	Rasterizer rasterizer = Rasterizer(n);
-
-	clipper clipper;
 	// set in
 	int in = polys.at(polyID).getPointCount();
-
-	sf::Vector2<float> tmpPoint;
 
 	// set outx[] and outy[]
 	float *outx = new float[in],
 		  *outy = new float[in];
 
+	clipper clip;
 	// clip
-	n = clipper.clipPolygon(in, x, y, outx, outy, clipWindow[2], clipWindow[0], clipWindow[3], clipWindow[1]);
+	n = clip.clipPolygon(in, inx, iny, outx, outy, clipWindow[2], clipWindow[0], clipWindow[3], clipWindow[1]);
 
-	delete[] x, y; // dynamic allocation
+	delete[] inx, iny; // dynamic allocation
 
-	int a;
+	// object that contain the drawPolygon
+	Rasterizer rast = Rasterizer(n);
+
+	int *x = new int[n],
+		*y = new int[n];
+
+	/*
+	VXmin = x;
+	VXmax = width;
+	VYmin = y;
+	VYmax = height;*/
+	for (int i = 0; i < n; i++) {
+		m = Matrix(3, 1, { outx[i], outy[i], 1 });
+		// let's normalize !
+		float x_normalized = ((m[0][0] - clipWindow[2]) / (clipWindow[3] - clipWindow[2])) * viewWindow[2] + viewWindow[0],
+		y_normalized = ((m[1][0] - clipWindow[0]) / (clipWindow[1] - clipWindow[0])) * viewWindow[3] + viewWindow[1];
+		x[i] = round( x_normalized);
+		y[i] = round(y_normalized);
+	}
 
 	// draw
-	//rasterizer.drawPolygon(n, outx, (int *) outy, *this);
+	rast.drawPolygon(n, x, y, *this);
+	//drawOutline(n, x, y);
 
-	
-	delete[] outx, outy; // dynamic allocation
+	delete [] x, y, outx, outy;
 }
 
 ///
@@ -231,65 +241,10 @@ void cgCanvas::scale (float x, float y)
 
 void cgCanvas::setClipWindow (float bottom, float top, float left, float right)
 {
-	clipWindow[0] = (int) bottom;
-	clipWindow[1] = (int) top;
-	clipWindow[2] = (int) left;
-	clipWindow[3] = (int) right;
-
-	//// YOUR IMPLEMENTATION HERE
-	//// We want to use the method int clipPolygon(int in, const float inx[], const float iny[],
-	//// float outx[], float outy[], float x0, float y0, float x1, float y1); contained in the
-	//// clipper class. So we need to create a clipper, and set in, inx, iny, outx, outy,
-	//// x0, y0, x1 and y1 values. 
-	//
-	//// As there is several polygons to clip, we will call the method clipPolygon multiple times.
-
-	//// After clipping, we want to update polys, the vector of ConvexShape
-
-	////int n; // the number of vertices after clipping
-
-	//// set x0, y0, x1, y1
-	//float x0 = left,
-	//	  y0 = bottom,
-	//	  x1 = right,
-	//	  y1 = top;
-
-	//// instancy a clipper
-	//clipper clipper;
-
-	//for (int poly = 0; poly < polyID; poly++) {
-	//	// set in
-	//	int in = polys.at(poly).getPointCount();
-
-	//	// set inx[] and inY[]
-	//	float *inx = new float[in],
-	//		  *iny = new float[in];
-
-	//	sf::Vector2<float> tmpPoint;
-
-	//	for (int i = 0; i < in; i++) {
-	//		tmpPoint = sf::Vector2<float>(polys.at(poly).getPoint(i));
-	//		inx[i] = tmpPoint.x;
-	//		iny[i] = tmpPoint.y;
-	//	}
-
-	//	// set outx[] and outy[]
-	//	float *outx = new float[in],
-	//		  *outy = new float[in];
-
-	//	// clip
-	//	int n = clipper.clipPolygon(in, inx, iny, outx, outy, x0, y0, x1, y1);
-
-	//	// update the number of points in the polygon
-	//	polys.at(poly).setPointCount(n);
-
-	//	// update the coordinates of the vertices
-	//	for (int i = 0; i < n; i++) {
-	//		polys.at(poly).setPoint(i, sf::Vector2<float>(outx[i], outy[i]));
-	//	}
-
-	//	delete[] inx, iny, outx, outy; // dynamic allocation
-	//}	
+	clipWindow[0] = bottom;
+	clipWindow[1] = top;
+	clipWindow[2] = left;
+	clipWindow[3] = right;
 }
 
 ///
@@ -304,5 +259,8 @@ void cgCanvas::setClipWindow (float bottom, float top, float left, float right)
 void cgCanvas::setViewport (int x, int y, int width, int height)
 {
     // YOUR IMPLEMENTATION HERE
-
+	viewWindow[0] = x;
+	viewWindow[1] = y;
+	viewWindow[2] = width;
+	viewWindow[3] = height;
 }
