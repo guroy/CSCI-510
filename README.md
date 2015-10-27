@@ -30,10 +30,12 @@ Labs
 
 ![alt_tag](http://nodim.fr/host/course/cg/lab3.png)
 
+##### <a href="https://github.com/guroy/CSCI-510/tree/master/Project%201%20Midterm">Project 1 Midterm</a>
+* Implementation of the complete 2D pipeline as presented in class using routines written for previous assignments. This project is in lieu of a traditional midterm exam. 
+
+![alt_tag](http://nodim.fr/host/course/cg/midterm.gif)
+
 ##### <a href="https://github.com/guroy/CSCI-510/tree/master/Hello,%20OpenGL!">Hello, OpenGL!</a>
 * Just a test program to setup OpenGL on Visual Studio. 
 
 ![alt_tag](http://nodim.fr/host/course/cg/hello.png)
-
-##### <a href="https://github.com/guroy/CSCI-510/tree/master/Project%201%20Midterm">Project 1 Midterm</a>
-* Implementation of the complete 2D pipeline as presented in class using routines written for previous assignments. This project is in lieu of a traditional midterm exam. 
