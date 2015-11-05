@@ -39,3 +39,8 @@ Labs
 * Just a test program to setup OpenGL on Visual Studio. 
 
 ![alt_tag](http://nodim.fr/host/course/cg/hello.png)
+
+##### <a href="https://github.com/guroy/CSCI-510/tree/master/Lab%204%20-%20Tesselation">Lab 4 - Tessellation</a>
+*  Creating tessellations of four basic shapes. Supplying implementations for four functions: ```makeCube()```, ```makeCylinder()```, ```makeCone()```, and ```makeSphere()```. 
+
+![alt_tag](http://nodim.fr/host/course/cg/lab4.png)
