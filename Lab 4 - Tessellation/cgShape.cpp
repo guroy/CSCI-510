@@ -146,36 +146,40 @@ void makeCone (float radius, int radialDivisions, int heightDivisions)
         heightDivisions = 1;
 
 	const float PI = 3.14159265358979f;
-	float alpha = 0,
-		y0 = -.5, y1,
-		x0, z0, x1, z1;
+
 	for (int i = 0; i < radialDivisions; i++) {
 		// we compute the coordinates of the triangle MON, 
 		// where M(x0,+/-.5,z0), O(0,+/-.5,0) and N(x1,+/-.5,z1)
-		x0 = radius * cosf((float)i * 2 * PI / (float)radialDivisions);
-		z0 = radius * sinf((float)i * 2 * PI / (float)radialDivisions);
-		x1 = radius * cosf((float)(i + 1) * 2 * PI / (float)radialDivisions);
-		z1 = radius * sinf((float)(i + 1) * 2 * PI / (float)radialDivisions);
+		float x0 = radius * cosf(i * 2 * PI / radialDivisions);
+		float z0 = radius * sinf(i * 2 * PI / radialDivisions);
+		float x1 = radius * cosf((i + 1) * 2 * PI / radialDivisions);
+		float z1 = radius * sinf((i + 1) * 2 * PI / radialDivisions);
 
 		// face (x,5,z) drawn counterclockwise
-		addTriangle(x1, -.5, z1, x0, -.5, z0, 0., -.5, 0.);
+		addTriangle(x0, -0.5, z0, x1, -0.5, z1, 0.0, -0.5, 0.0);
 
+		float y0 = -0.5;
+		float cx0 = -x0 / heightDivisions;
+		float cz0 = -z0 / heightDivisions;
+		float cx1 = -x1 / heightDivisions;
+		float cz1 = -z1 / heightDivisions;
+		float y1 = 1.0 / heightDivisions;
 		// draw the rectangles for the height
-		for (int j = 0; j < heightDivisions; j++) {
-			// if we are at the top of the cone, just draw a triangle
-			if (j + 1 >= heightDivisions) {
-				addTriangle(x0, -.5, z0, x1, -.5, z1, 0., .5, 0.);
-			}
-			// else we wanna draw parallelograms
-			else {
-				y0 = (float)(j) / (float)heightDivisions - .5;
-				y1 = (float)(j + 1) / (float)heightDivisions - .5;
-				addTriangle(x0, y0, z0, x1, y0, z1, x0, y1, z0);
-				addTriangle(x1, y0, z1, x1, y1, z1, x0, y1, z0);
-			}
-		}
-	}
+		for (int j = 0; j < heightDivisions - 1; j++) {
+		// else we wanna draw trapezium			
+			addTriangle(x0, y0, z0, x0+cx0, y0+y1, z0+cz0, x1, y0, z1);
+			addTriangle(x0+cx0, y0+y1, z0+cz0, x1+cx1, y0+y1, z1+cz1, x1, y0, z1);
 
+			x0 += cx0;
+			z0 += cz0;
+			x1 += cx1;
+			z1 += cz1;
+			y0 += y1;
+		}
+
+		// when we are at the top of the cone, just draw a triangle
+		addTriangle(x0, y0, z0, 0.0, 0.5, 0.0, x1, y0, z1);
+	}
 }
 
 
