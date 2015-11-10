@@ -8,7 +8,8 @@
 //
 //  This code can be compiled as either C or C++.
 //
-//  Contributor:  YOUR_NAME_HERE
+//  Contributor:  Guillaume Roy
+//  Contributor:  Gurvan Lecuyer
 //
 
 #ifdef WIN32
@@ -25,6 +26,7 @@
 
 #include "simpleShape.h"
 #include <math.h>
+#include "cgShape.h"
 
 
 ///
@@ -194,16 +196,106 @@ void makeCone (float radius, int radialDivisions, int heightDivisions)
 //
 // Can only use calls to addTriangle
 ///
-void makeSphere (float radius, int slices, int stacks)
+void makeSphere(float radius, int slices, int stacks)
 {
-    // IF USING RECURSIVE SUBDIVISION, MODIFY THIS TO USE
-    // A MINIMUM OF 1 AND A MAXIMUM OF 5 FOR 'slices'
+	// IF USING RECURSIVE SUBDIVISION, MODIFY THIS TO USE
+	// A MINIMUM OF 1 AND A MAXIMUM OF 5 FOR 'slices'
 
-    if( slices < 3 )
-        slices = 3;
+	if (slices < 1)
+		slices = 1;
+	if (slices > 5)
+		slices = 5;
 
-    if( stacks < 3 )
-        stacks = 3;
+	if (stacks < 3)
+		stacks = 3;
 
-    // YOUR IMPLEMENTATION HERE
+	//define the variabel "a" it's describe in the course
+	float a = radius;
+	//declaration of the 19 triangles of the icosahedron
+	//Triangle0 = <V0,V1,V2>
+	recursiveTriangle(0, a, -1, -a, 1, 0, a, 1, 0, slices, radius);
+	//Triangle1 = <V3, V2, V1>
+	recursiveTriangle(0, a, 1, a, 1, 0, -a, 1, 0, slices, radius);
+	//Triangle2 = <V3, V4, V5>
+	recursiveTriangle(0, a, 1, -1, 0, a, 0, -a, 1, slices, radius);
+	//Triangle3 = <V3, V5, V6>
+	recursiveTriangle(0, a, 1, 0, -a, 1, 1, 0, a, slices, radius);
+	//Triangle4 = <V0, V7, V8>
+	recursiveTriangle(0, a, -1, 1, 0, -a, 0, -a, -1, slices, radius);
+	//Triangle5 = <V0, V8, V9>
+	recursiveTriangle(0, a, -1, 0, -a, -1, -1, 0, -a, slices, radius);
+	//Triangle6 = <V5, V10, V11>
+	recursiveTriangle(0, -a, 1, -a, -1, 0, a, -1, 0, slices, radius);
+	//Triangle7 = <V8, V11, V10>
+	recursiveTriangle(0, -a, -1, a, -1, 0, -a, -1, 0, slices, radius);
+	//Triangle8 = <V1, V9, V4>
+	recursiveTriangle(-a, 1, 0, -1, 0, -a, -1, 0, a, slices, radius);
+	//Triangle9 = <V10, V4, V9>
+	recursiveTriangle(-a, -1, 0, -1, 0, a, -1, 0, -a, slices, radius);
+	//Triangle10 = <V2, V6, V7>
+	recursiveTriangle(a, 1, 0, 1, 0, a, 1, 0, -a, slices, radius);
+	//Triangle11 = <V11, V7, V6>
+	recursiveTriangle(a, -1, 0, 1, 0, -a, 1, 0, a, slices, radius);
+	//Triangle12 = <V3, V1, V4>
+	recursiveTriangle(0, a, 1, -a, 1, 0, -1, 0, a, slices, radius);
+	//Triangle13 = <V3, V6, V2>
+	recursiveTriangle(0, a, 1, 1, 0, a, a, 1, 0, slices, radius);
+	//Triangle14 = <V0, V9, V1>
+	recursiveTriangle(0, a, -1, -1, 0, -a, -a, 1, 0, slices, radius);
+	//Triangle15 = <V0, V2, V7>
+	recursiveTriangle(0, a, -1, a, 1, 0, 1, 0, -a, slices, radius);
+	//Triangle16 = <V8, V10, V9>
+	recursiveTriangle(0, -a, -1, -a, -1, 0, -1, 0, -a, slices, radius);
+	//Triangle17 = <V8, V7, V11>
+	recursiveTriangle(0, -a, -1, 1, 0, -a, a, -1, 0, slices, radius);
+	//Triangle18 = <V5, V4, V10>
+	recursiveTriangle(0, -a, 1, -1, 0, a, -a, -1, 0, slices, radius);
+	//Triangle19 = <V5, V11, V6>
+	recursiveTriangle(0, -a, 1, a, -1, 0, 1, 0, a, slices, radius);
+}
+
+void recursiveTriangle(float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, int subdivision, float radius)
+{
+	if (subdivision == 1)
+	{
+		//Normalization of the point 0
+		float norm0 = pow((pow(x0, 2) + pow(y0, 2) + pow(z0, 2)), 0.5f);
+		x0 = (x0 / norm0) * radius;
+		y0 = (y0 / norm0) * radius;
+		z0 = (z0 / norm0) * radius;
+		//Normalization of the point 1
+		float norm1 = pow((pow(x1, 2) + pow(y1, 2) + pow(z1, 2)), 0.5f);
+		x1 = (x1 / norm1) * radius;
+		y1 = (y1 / norm1) * radius;
+		z1 = (z1 / norm1) * radius;
+		//Normalization of the point 2
+		float norm2 = pow((pow(x2, 2) + pow(y2, 2) + pow(z2, 2)), 0.5f);
+		x2 = (x2 / norm2) * radius;
+		y2 = (y2 / norm2) * radius;
+		z2 = (z2 / norm2) * radius;
+		addTriangle(x0, y0, z0, x1, y1, z1, x2, y2, z2);
+	}
+	else
+	{
+		//Calculate the point on the middle of the edge point0 - point1
+		float midx01 = (x0 + x1) / 2.;
+		float midy01 = (y0 + y1) / 2.;
+		float midz01 = (z0 + z1) / 2.;
+
+		//Calculate the point on the middle of the edge point1 - point2
+		float midx12 = (x1 + x2) / 2.;
+		float midy12 = (y1 + y2) / 2.;
+		float midz12 = (z1 + z2) / 2.;
+
+		//Calculate the point on the middle of the edge point2 - point0
+		float midx20 = (x0 + x2) / 2.;
+		float midy20 = (y0 + y2) / 2.;
+		float midz20 = (z0 + z2) / 2.;
+
+		//Call 4 times (1 call per sub triangles created) the recursiveTriangle method with subdivision-1,
+		recursiveTriangle(x0, y0, z0, midx01, midy01, midz01, midx20, midy20, midz20, (subdivision - 1), radius);
+		recursiveTriangle(midx01, midy01, midz01, midx12, midy12, midz12, midx20, midy20, midz20, (subdivision - 1), radius);
+		recursiveTriangle(midx01, midy01, midz01, x1, y1, z1, midx12, midy12, midz12, (subdivision - 1), radius);
+		recursiveTriangle(midx20, midy20, midz20, midx12, midy12, midz12, x2, y2, z2, (subdivision - 1), radius);
+	}
 }

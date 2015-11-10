@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hello, OpenGL!", "Hello, Op
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab 4 - Tessellation", "Lab 4 - Tessellation\Lab 4 - Tessellation.vcxproj", "{B09C8DC5-9065-4854-A99A-718939A19E74}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab 5 - 3D Transformations", "Lab 5 - 3D Transformations\Lab 5 - 3D Transformations.vcxproj", "{610B658C-7D4A-4BAB-957F-3C20D9022BCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -45,6 +47,10 @@ Global
 		{B09C8DC5-9065-4854-A99A-718939A19E74}.Debug|Win32.Build.0 = Debug|Win32
 		{B09C8DC5-9065-4854-A99A-718939A19E74}.Release|Win32.ActiveCfg = Release|Win32
 		{B09C8DC5-9065-4854-A99A-718939A19E74}.Release|Win32.Build.0 = Release|Win32
+		{610B658C-7D4A-4BAB-957F-3C20D9022BCC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{610B658C-7D4A-4BAB-957F-3C20D9022BCC}.Debug|Win32.Build.0 = Debug|Win32
+		{610B658C-7D4A-4BAB-957F-3C20D9022BCC}.Release|Win32.ActiveCfg = Release|Win32
+		{610B658C-7D4A-4BAB-957F-3C20D9022BCC}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
