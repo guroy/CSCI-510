@@ -43,4 +43,9 @@ Labs
 ##### <a href="https://github.com/guroy/CSCI-510/tree/master/Lab%204%20-%20Tesselation">Lab 4 - Tessellation</a>
 *  Creating tessellations of four basic shapes. Supplying implementations for four functions: ```makeCube()```, ```makeCylinder()```, ```makeCone()```, and ```makeSphere()```. 
 
-![alt_tag](http://nodim.fr/host/course/cg/lab4.png)
+![alt_tag](http://nodim.fr/host/course/cg/lab4.gif)
+
+##### <a href="https://github.com/guroy/CSCI-510/tree/master/Lab%204%20-%20Tesselation">Lab 4 - Tessellation</a>
+*  In this assignment, we work with OpenGL and GLSL to implement 3D transformations; more specifically, ```Model transformation``` Take vertices from model to world coordinates ```View transformation``` Take vertices from world to camera coordinates ```Projection transformation``` Take vertices from camera to clip coordinates.
+
+![alt_tag](http://nodim.fr/host/course/cg/lab5.gif)
