@@ -23,8 +23,8 @@ GLfloat left   = -1.0f;
 GLfloat right  = 1.0f;
 GLfloat top    = 1.0f;
 GLfloat bottom = -1.0f;
-GLfloat near   = 3.0f;
-GLfloat far    = 100.5f;
+GLfloat near_  = 3.0f; // near is defined in minwindef.h -> replaced by near_
+GLfloat far_   = 100.5f; // far is defined in minwindef.h -> replaced by far_
 
 
 /**
@@ -52,8 +52,8 @@ void setUpFrustum( GLuint program )
     glUniform1f( rightLoc, right );
     glUniform1f( topLoc, top );
     glUniform1f( bottomLoc, bottom );
-    glUniform1f( nearLoc, near );
-    glUniform1f( farLoc, far );
+    glUniform1f( nearLoc, near_ );
+    glUniform1f( farLoc, far_ );
 }
 
 

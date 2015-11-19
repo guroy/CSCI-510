@@ -12,6 +12,7 @@
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
 #else
+#include <windows.h>
 #include <GL/glew.h>
 #include <GL/gl.h>
 #endif
@@ -131,7 +132,7 @@ float *getVertices( void )
 
     // create and fill a new point array
     pointArray = new float[points.size()];
-    for( int i=0; i < points.size(); i++ ) {
+    for( unsigned int i=0; i < points.size(); i++ ) {
         pointArray[i] = points[i];
     }
 
@@ -151,7 +152,7 @@ float *getNormals( void )
 
     // create and fill a new point array
     normalArray = new float[normals.size()];
-    for( int i=0; i < normals.size(); i++ ) {
+	for ( unsigned int i = 0; i < normals.size(); i++) {
         normalArray[i] = normals[i];
     }
 
@@ -171,7 +172,7 @@ GLushort *getElements( void )
 
     // create and fill a new point array
     elemArray = new GLushort[points.size()];
-    for( int i=0; i < points.size(); i++ ) {
+	for ( unsigned int i = 0; i < points.size(); i++) {
         elemArray[i] = i;
     }
 
