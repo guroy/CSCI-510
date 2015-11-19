@@ -48,7 +48,7 @@ Labs
 ##### <a href="https://github.com/guroy/CSCI-510/tree/master/Lab%205%20-%203D%20Transformations">Lab 5 - 3D Transformations</a>
 *  In this assignment, we work with OpenGL and GLSL to implement 3D transformations; more specifically, ```Model transformation``` Take vertices from model to world coordinates ```View transformation``` Take vertices from world to camera coordinates ```Projection transformation``` Take vertices from camera to clip coordinates.
 
-![alt_tag](http://nodim.fr/host/course/cg/lab5.gif)
+![alt_tag](http://nodim.fr/host/course/cg/lab5.png)
 
 ##### <a href="https://github.com/guroy/CSCI-510/tree/master/Lab%206%20-%20Shading">Lab 6 - Shading</a>
 *  In this assignment, we will work with OpenGL and GLSL to implement lighting, materials, and shading. We will be producing flat shaded, Gouraud shaded, and Phong shaded shapes using the Phong Illumination Model. 
