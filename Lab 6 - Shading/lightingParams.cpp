@@ -39,6 +39,7 @@ float ambientLightColor[] = { 0.5f, 0.5f, 0.5f, 1.0 };
 void setUpPhong( GLuint program )
 {
     // Add your code here.
+	// we basically send each information to the shaders
 	glUniform4fv(
 		glGetUniformLocation(program, "lightSourceColor"),
 		1, lightSourceColor);
@@ -55,7 +56,7 @@ void setUpPhong( GLuint program )
 		glGetUniformLocation(program, "specular_color"),
 		1, specular_color);
 
-	/*glUniform1f(
+	glUniform1f(
 		glGetUniformLocation(program, "ambient_reflection_coefficient"),
 		ambient_reflection_coefficient);
 	glUniform1f(
@@ -63,7 +64,7 @@ void setUpPhong( GLuint program )
 		diffuse_reflection_coefficient);
 	glUniform1f(
 		glGetUniformLocation(program, "specular_reflection_coefficient"),
-		specular_reflection_coefficient);*/
+		specular_reflection_coefficient);
 	glUniform1f(
 		glGetUniformLocation(program, "specular_exponent"),
 		specular_exponent);
