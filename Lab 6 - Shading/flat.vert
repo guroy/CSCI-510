@@ -138,7 +138,7 @@ void main()
 	lAmbient = ambientLightColor;
 
 	// vector parameters
-	light = (modelViewMat * vPosition).xyz;
-	vPos = (modelMat * lightSourcePosition).xyz;
+	vPos = (modelViewMat * vPosition).xyz;
+	light = (modelMat * lightSourcePosition).xyz;
 	vNorm = (normalize(modelViewMat * vec4(vNormal,0.0))).xyz;
 }

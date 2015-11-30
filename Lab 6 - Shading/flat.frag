@@ -28,8 +28,8 @@ void main()
 	vec4 ambient = Ia * ka * lAmbient;
 
 	// diffuse
-	vec4 diffuse = lColor * Id * kd * dot(N, L);
+	vec4 diffuse = Id * kd * (dot(N, L));
 	// the vectors have been normalized so we can replace cos by dot
 
-	gl_FragColor = ambient + diffuse;
+	gl_FragColor = ambient + diffuse * lColor;
 }
