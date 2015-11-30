@@ -23,8 +23,10 @@ in vec3 vPos;
 
 void main()
 {
-	vec3 N = normalize(vNorm);
+	vec3 N = normalize(vNorm); // need for diffuse
 	vec3 L = normalize(light - vPos);
+	vec3 R = normalize (reflect(L, N)); // need for specular
+    vec3 V = normalize (vPos);
 
 	// ambient
 	vec4 ambient = ambient_color * ambient_reflection_coefficient * ambientLightColor;
@@ -33,5 +35,8 @@ void main()
 	vec4 diffuse = diffuse_color * diffuse_reflection_coefficient * (dot(N, L));
 	// the vectors have been normalized so we can replace cos by dot
 
-	gl_FragColor = ambient + diffuse * lightSourceColor;
+	// specular
+	vec4 specular = specular_color * specular_reflection_coefficient * pow(max(0.0, dot(V,R)), specular_exponent);
+
+	gl_FragColor = ambient + diffuse * lightSourceColor + specular;
 }
