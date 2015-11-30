@@ -2,18 +2,18 @@
 
 // Flat shading fragment shader
 
+
 // Material properties of the teapot and torus
-in vec4 Ia;
-in float ka;
-in vec4 Id;
-in float kd;
+uniform vec4 ambient_color;
+uniform float ambient_reflection_coefficient;
+uniform vec4 diffuse_color;
+uniform float diffuse_reflection_coefficient;
 
 // Properties of the light source
-in vec4 lColor;
-in vec4 lPosition;
+uniform vec4 lightSourceColor;
 
 // Properties of the ambient light
-in vec4 lAmbient;
+uniform vec4 ambientLightColor;
 
 in vec3 vNorm;
 in vec3 light;
@@ -25,11 +25,11 @@ void main()
 	vec3 L = normalize(light - vPos);
 
 	// ambient
-	vec4 ambient = Ia * ka * lAmbient;
+	vec4 ambient = ambient_color * ambient_reflection_coefficient * ambientLightColor;
 
 	// diffuse
-	vec4 diffuse = Id * kd * (dot(N, L));
+	vec4 diffuse = diffuse_color * diffuse_reflection_coefficient * (dot(N, L));
 	// the vectors have been normalized so we can replace cos by dot
 
-	gl_FragColor = ambient + diffuse * lColor;
+	gl_FragColor = ambient + diffuse * lightSourceColor;
 }

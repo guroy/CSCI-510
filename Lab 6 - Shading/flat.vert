@@ -4,18 +4,8 @@
 
 // INCOMING DATA
 
-// Material properties of the teapot and torus
-uniform vec4 ambient_color;
-uniform float ambient_reflection_coefficient;
-uniform vec4 diffuse_color;
-uniform float diffuse_reflection_coefficient;
-
 // Properties of the light source
-uniform vec4 lightSourceColor;
 uniform vec4 lightSourcePosition;
-
-// Properties of the ambient light
-uniform vec4 ambientLightColor;
 
 // Vertex location (in model space)
 attribute vec4 vPosition;
@@ -48,19 +38,6 @@ uniform float far;
 out vec3 vNorm;
 out vec3 light;
 out vec3 vPos;
-
-// Material properties of the teapot and torus
-out vec4 Ia;
-out float ka;
-out vec4 Id;
-out float kd;
-
-// Properties of the light source
-out vec4 lColor;
-out vec4 lPosition;
-
-// Properties of the ambient light
-out vec4 lAmbient;
 
 
 void main()
@@ -123,19 +100,6 @@ void main()
 
     // Transform the vertex location into clip space
     gl_Position =  projMat * viewMat  * modelMat * vPosition;
-
-	// Material properties of the teapot and torus
-	Ia = ambient_color;
-	ka = ambient_reflection_coefficient;
-	Id = diffuse_color;
-	kd = diffuse_reflection_coefficient;
-
-	// Properties of the light source
-	lColor = lightSourceColor;
-	lPosition = lightSourcePosition;
-
-	// Properties of the ambient light
-	lAmbient = ambientLightColor;
 
 	// vector parameters
 	vPos = (modelViewMat * vPosition).xyz;
