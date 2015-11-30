@@ -4,6 +4,9 @@
 
 // INCOMING DATA
 
+// Properties of the light source
+uniform vec4 lightSourcePosition;
+
 // Vertex location (in model space)
 attribute vec4 vPosition;
 
@@ -28,7 +31,13 @@ uniform float bottom;
 uniform float near;
 uniform float far;
 
+
 // OUTGOING DATA
+
+// vector parameters
+out vec3 vNorm;
+out vec3 light;
+out vec3 vPos;
 
 void main()
 {
@@ -90,4 +99,9 @@ void main()
 
     // Transform the vertex location into clip space
     gl_Position =  projMat * viewMat  * modelMat * vPosition;
+
+	// vector parameters
+	vPos = (modelViewMat * vPosition).xyz;
+	light = (modelMat * lightSourcePosition).xyz;
+	vNorm = (normalize(modelViewMat * vec4(vNormal,0.0))).xyz;
 }

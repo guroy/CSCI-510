@@ -2,7 +2,6 @@
 
 // Flat shading fragment shader
 
-
 // Material properties of the teapot and torus
 uniform vec4 ambient_color;
 uniform float ambient_reflection_coefficient;
