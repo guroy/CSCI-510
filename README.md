@@ -52,3 +52,5 @@ Labs
 
 ##### <a href="https://github.com/guroy/CSCI-510/tree/master/Lab%206%20-%20Shading">Lab 6 - Shading</a>
 *  In this assignment, we will work with OpenGL and GLSL to implement lighting, materials, and shading. We will be producing flat shaded, Gouraud shaded, and Phong shaded shapes using the Phong Illumination Model. 
+
+![alt_tag](http://nodim.fr/host/course/cg/lab6.png)
