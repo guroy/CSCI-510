@@ -4,6 +4,22 @@
 
 // INCOMING DATA
 
+// Material properties of the teapot and torus
+uniform vec4 ambient_color;
+uniform float ambient_reflection_coefficient;
+uniform vec4 diffuse_color;
+uniform float diffuse_reflection_coefficient;
+uniform vec4 specular_color;
+uniform float specular_exponent;
+uniform float specular_reflection_coefficient;
+
+// Properties of the light source
+uniform vec4 lightSourceColor;
+uniform vec4 lightSourcePosition;
+
+// Properties of the ambient light
+uniform vec4 ambientLightColor;
+
 // Vertex location (in model space)
 attribute vec4 vPosition;
 
@@ -30,12 +46,19 @@ uniform float far;
 
 // OUTGOING DATA
 
+varying vec4 color;
+
 void main()
 {
     // Compute the sines and cosines of each rotation about each axis
     vec3 angles = radians( theta );
     vec3 c = cos( angles );
     vec3 s = sin( angles );
+
+	// vector parameters
+	vec3 vNorm;
+	vec3 light;
+	vec3 vPos;
 
     // Create rotation matrices
     mat4 rxMat = mat4( 1.0,  0.0,  0.0,  0.0,
@@ -90,4 +113,26 @@ void main()
 
     // Transform the vertex location into clip space
     gl_Position =  projMat * viewMat  * modelMat * vPosition;
+
+	// vector parameters
+	vPos = (modelViewMat * vPosition).xyz;
+	light = (modelMat * lightSourcePosition).xyz;
+	vNorm = (normalize(modelViewMat * vec4(vNormal,0.0))).xyz;
+
+	vec3 N = normalize(vNorm); // need for diffuse
+	vec3 L = normalize(light - vPos);
+	vec3 R = normalize (reflect(L, N)); // need for specular
+    vec3 V = normalize (vPos);
+
+	// ambient
+	vec4 ambient = ambient_color * ambient_reflection_coefficient * ambientLightColor;
+
+	// diffuse
+	vec4 diffuse = diffuse_color * diffuse_reflection_coefficient * (dot(N, L));
+	// the vectors have been normalized so we can replace cos by dot
+
+	// specular
+	vec4 specular = specular_color * specular_reflection_coefficient * pow(max(0.0, dot(V,R)), specular_exponent);
+
+	color = ambient + diffuse * lightSourceColor + specular;
 }

@@ -14,9 +14,9 @@ uniform vec4 lightSourceColor;
 // Properties of the ambient light
 uniform vec4 ambientLightColor;
 
-in vec3 vNorm;
-in vec3 light;
-in vec3 vPos;
+varying vec3 vNorm;
+varying vec3 light;
+varying vec3 vPos;
 
 void main()
 {

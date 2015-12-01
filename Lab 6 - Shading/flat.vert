@@ -35,9 +35,9 @@ uniform float far;
 // OUTGOING DATA
 
 // vector parameters
-out vec3 vNorm;
-out vec3 light;
-out vec3 vPos;
+varying vec3 vNorm;
+varying vec3 light;
+varying vec3 vPos;
 
 
 void main()
