@@ -57,10 +57,10 @@ Labs
 
 ##### <a href="https://github.com/guroy/CSCI-510/tree/master/Project%202%20Final">Project 2 Final</a>
 * We must create a "complex" 3D scene with the following characteristics: 
-** Three or more separate objects, modeled in local coordinates and positioned in the scene using model transformations 
-** Non-default camera positioning 
-** At least one light source 
-** Use of at least one texture 
-** Shading on all objects which aren't texture-mapped, with at least two different sets of material properties 
+ * Three or more separate objects, modeled in local coordinates and positioned in the scene using model transformations 
+ * Non-default camera positioning 
+ * At least one light source 
+ * Use of at least one texture 
+ * Shading on all objects which aren't texture-mapped, with at least two different sets of material properties 
 
-![alt_tag](http://nodim.fr/host/course/cg/midterm.gif)
+![alt_tag](http://nodim.fr/host/course/cg/final.png)
