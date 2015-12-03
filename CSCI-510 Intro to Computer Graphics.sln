@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab 5 - 3D Transformations"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab 6 - Shading", "Lab 6 - Shading\Lab 6 - Shading.vcxproj", "{8CD96D2F-9D82-461B-91A1-A9AA066596EE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project 2 Final", "Project 2 Final\Project 2 Final.vcxproj", "{C94CCAD4-8961-4648-9102-DE1E9F552067}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -57,6 +59,10 @@ Global
 		{8CD96D2F-9D82-461B-91A1-A9AA066596EE}.Debug|Win32.Build.0 = Debug|Win32
 		{8CD96D2F-9D82-461B-91A1-A9AA066596EE}.Release|Win32.ActiveCfg = Release|Win32
 		{8CD96D2F-9D82-461B-91A1-A9AA066596EE}.Release|Win32.Build.0 = Release|Win32
+		{C94CCAD4-8961-4648-9102-DE1E9F552067}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C94CCAD4-8961-4648-9102-DE1E9F552067}.Debug|Win32.Build.0 = Debug|Win32
+		{C94CCAD4-8961-4648-9102-DE1E9F552067}.Release|Win32.ActiveCfg = Release|Win32
+		{C94CCAD4-8961-4648-9102-DE1E9F552067}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
