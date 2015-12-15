@@ -54,3 +54,13 @@ Labs
 *  In this assignment, we will work with OpenGL and GLSL to implement lighting, materials, and shading. We will be producing flat shaded, Gouraud shaded, and Phong shaded shapes using the Phong Illumination Model. 
 
 ![alt_tag](http://nodim.fr/host/course/cg/lab6.png)
+
+##### <a href="https://github.com/guroy/CSCI-510/tree/master/Project%202%20Final">Project 2 Final</a>
+* We must create a "complex" 3D scene with the following characteristics: 
+ * Three or more separate objects
+ * Non-default camera positioning 
+ * At least one light source 
+ * Use of at least one texture 
+ * Shading on all objects which aren't texture-mapped
+
+![alt_tag](http://nodim.fr/host/course/cg/final.png)
