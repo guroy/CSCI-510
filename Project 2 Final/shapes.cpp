@@ -189,13 +189,14 @@ static void makeTardis( int shadingType )
 */
 void makeShape( int choice, int shadingType )
 {
-	if (choice == OBJ_FENCE) {
+	if (choice == OBJ_BACKGROUND);
+		//makeGround(shadingType);
+	else if (choice == OBJ_FENCE) {
 		makeFence(shadingType);
-		makeGround(shadingType);
 	}
-	else if (choice == OBJ_TARDIS)
-        makeTardis( shadingType );
+	else if (choice == OBJ_GROUND)
+		makeGround(shadingType);
 	else
-		makeGround( shadingType );
+		makeTardis(shadingType);
 }
 

@@ -61,7 +61,7 @@ int    numVerts[4][4];
 bool animating = false;
 
 // Initial animation rotation angles
-float angles[3] = { 0.0f, 0.0f, 0.0f };
+float angles[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 // Current shader type:  flat vs. non-flat
 int currentShader = SHADE_FLAT;
@@ -175,8 +175,12 @@ void init()
     program = flat;
 
     // Create all four objects
+	createShape(OBJ_BACKGROUND, SHADE_FLAT);
+	createShape(OBJ_BACKGROUND, SHADE_NOT_FLAT);
     createShape( OBJ_FENCE, SHADE_FLAT );
     createShape( OBJ_FENCE, SHADE_NOT_FLAT );
+	createShape(OBJ_GROUND, SHADE_FLAT);
+	createShape(OBJ_GROUND, SHADE_NOT_FLAT);
     createShape( OBJ_TARDIS, SHADE_FLAT );
     createShape( OBJ_TARDIS, SHADE_NOT_FLAT );
 
@@ -210,7 +214,7 @@ void display( void )
 
     // set up the camera
     setUpCamera( program,
-        0.2f, 3.0f, 6.5f,
+        0.2f, 2.8f, 6.5f,
         0.0f, 1.0f, 0.0f,
         0.0f, 1.0f, 0.0f
     );
@@ -218,7 +222,7 @@ void display( void )
     // set up transformations for the fence
     setUpTransforms( program,
 		1.0f, 1.0f, 1.0f,
-		-90.0f, 0.0f, 3.0f,
+		-110.0f, 0.0f, 3.0f,
 		0.0f, -2.0f, -2.0f);
 
     // draw it
@@ -230,10 +234,10 @@ void display( void )
 	setUpPhong(program, OBJ_GROUND); // ground
 
 	// set up transformations for the ground
-	/*setUpTransforms(program,
+	setUpTransforms(program,
 		1.0f, 1.0f, 1.0f,
-		-90.0f, 0.0f, 3.0f,
-		0.0f, -2.0f, -2.0f);*/
+		-110.0f, 0.0f, 3.0f,
+		0.0f, -2.0f, -2.0f);
 
 	// draw it
 	selectBuffers(program, OBJ_GROUND, currentShader);
@@ -244,9 +248,9 @@ void display( void )
 
     // set up transformations for the tardis
     setUpTransforms( program,
-        1.2f, 1.2f, 1.2f,
-        -110.0f, 0.0f, -40.0f,
-        1.5f, -0.5f, -1.5f );
+        1.0f, 1.0f, 1.0f,
+        -110.0f, 0.0f, 60.0f,
+        1.3f, 0.0f, 0.0f );
 
     // draw it
     selectBuffers( program, OBJ_TARDIS, currentShader );

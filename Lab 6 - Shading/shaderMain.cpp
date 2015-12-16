@@ -201,7 +201,7 @@ extern "C" {
 		glUseProgram(program);
 
 		// set up Phong illumination
-		setUpPhong(program, 1); // fence
+		setUpPhong(program); // fence
 
 
 		// set up viewing and projection parameters
@@ -224,8 +224,6 @@ extern "C" {
 		selectBuffers(program, OBJ_TORUS, currentShader);
 		glDrawElements(GL_TRIANGLES, numVerts[OBJ_TORUS][currentShader],
 			GL_UNSIGNED_SHORT, (void *)0);
-
-		setUpPhong(program, 3); // fence
 
 		// set up transformations for the teapot
 		setUpTransforms(program,
