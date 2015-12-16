@@ -73,41 +73,41 @@ GLuint program, flat, phong, gouraud;
 // @param obj - which shape to create
 // @param flat   - flat vs. non-flat shading
 //
-void createShape( int obj, int flat )
+void createShape(int obj, int flat)
 {
-    // clear any previous shape
-    clearShape();
+	// clear any previous shape
+	clearShape();
 
-    // make the shape
-    makeShape( obj, flat );
+	// make the shape
+	makeShape(obj, flat);
 
-    // save the vertex count
-    numVerts[obj][flat] = nVertices();
+	// save the vertex count
+	numVerts[obj][flat] = nVertices();
 
-    // get the points for the shape
-    float *points = getVertices();
-    int dataSize = nVertices() * 4 * sizeof (float);
+	// get the points for the shape
+	float *points = getVertices();
+	int dataSize = nVertices() * 4 * sizeof(float);
 
-    // get the normals for the shape
-    float *normals = getNormals();
-    int ndataSize = nVertices() * 3 * sizeof (float);
+	// get the normals for the shape
+	float *normals = getNormals();
+	int ndataSize = nVertices() * 3 * sizeof(float);
 
-    // get the element data for the shape
-    GLushort *elements = getElements();
-    int edataSize = nVertices() * sizeof (GLushort);
+	// get the element data for the shape
+	GLushort *elements = getElements();
+	int edataSize = nVertices() * sizeof(GLushort);
 
-    // generate the vertex buffer
-    glGenBuffers( 1, &vbuffer[obj][flat] );
-    glBindBuffer( GL_ARRAY_BUFFER, vbuffer[obj][flat] );
-    glBufferData( GL_ARRAY_BUFFER, dataSize + ndataSize, 0, GL_STATIC_DRAW );
-    glBufferSubData( GL_ARRAY_BUFFER, 0, dataSize, points );
-    glBufferSubData( GL_ARRAY_BUFFER, dataSize, ndataSize, normals );
+	// generate the vertex buffer
+	glGenBuffers(1, &vbuffer[obj][flat]);
+	glBindBuffer(GL_ARRAY_BUFFER, vbuffer[obj][flat]);
+	glBufferData(GL_ARRAY_BUFFER, dataSize + ndataSize, 0, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, points);
+	glBufferSubData(GL_ARRAY_BUFFER, dataSize, ndataSize, normals);
 
-    // generate the element buffer
-    glGenBuffers( 1, &ebuffer[obj][flat] );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ebuffer[obj][flat] );
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, edataSize,
-        elements, GL_STATIC_DRAW );
+	// generate the element buffer
+	glGenBuffers(1, &ebuffer[obj][flat]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebuffer[obj][flat]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, edataSize,
+		elements, GL_STATIC_DRAW);
 }
 
 //
@@ -118,73 +118,73 @@ void createShape( int obj, int flat )
 //
 // Assumes the correct shader program has already been enabled
 //
-void selectBuffers( GLuint program, int obj, int flat ) {
+void selectBuffers(GLuint program, int obj, int flat) {
 
-    // bind the buffers
-    glBindBuffer( GL_ARRAY_BUFFER, vbuffer[obj][flat] );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ebuffer[obj][flat] );
+	// bind the buffers
+	glBindBuffer(GL_ARRAY_BUFFER, vbuffer[obj][flat]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebuffer[obj][flat]);
 
-    // calculate the number of bytes of vertex data
-    int dataSize = numVerts[obj][flat] * 4 * sizeof(float);
+	// calculate the number of bytes of vertex data
+	int dataSize = numVerts[obj][flat] * 4 * sizeof(float);
 
-    // set up the vertex attribute variables
-    GLuint vPosition = glGetAttribLocation( program , "vPosition" );
-    glEnableVertexAttribArray( vPosition );
-    glVertexAttribPointer( vPosition, 4, GL_FLOAT, GL_FALSE, 0,
-                           BUFFER_OFFSET(0) );
+	// set up the vertex attribute variables
+	GLuint vPosition = glGetAttribLocation(program, "vPosition");
+	glEnableVertexAttribArray(vPosition);
+	glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, 0,
+		BUFFER_OFFSET(0));
 
-    GLuint vNormal = glGetAttribLocation( program, "vNormal" );
-    glEnableVertexAttribArray( vNormal );
-    glVertexAttribPointer( vNormal, 3, GL_FLOAT, GL_FALSE, 0,
-                           BUFFER_OFFSET(dataSize) );
+	GLuint vNormal = glGetAttribLocation(program, "vNormal");
+	glEnableVertexAttribArray(vNormal);
+	glVertexAttribPointer(vNormal, 3, GL_FLOAT, GL_FALSE, 0,
+		BUFFER_OFFSET(dataSize));
 }
 
 
 // Verify shader program creation
-static void checkShaderError( GLuint program, const char *which )
+static void checkShaderError(GLuint program, const char *which)
 {
-    if( !program ) {
+	if (!program) {
 #ifdef __cplusplus
-        cerr << "Error setting " << which << " shader - "
-             << errorString(shaderErrorCode) << endl;
+		cerr << "Error setting " << which << " shader - "
+			<< errorString(shaderErrorCode) << endl;
 #else
-        fprintf( stderr, "Error setting up %s shader - %s\n",
-            which, errorString(shaderErrorCode) );
+		fprintf(stderr, "Error setting up %s shader - %s\n",
+			which, errorString(shaderErrorCode));
 #endif
-        exit(1);
-    }
+		exit(1);
+	}
 }
 
 
 // OpenGL initialization
 void init()
 {
-    // Load shaders, verifying each
-    flat = shaderSetup( "flat.vert", "flat.frag" );
-    checkShaderError( flat, "flat" );
+	// Load shaders, verifying each
+	flat = shaderSetup("flat.vert", "flat.frag");
+	checkShaderError(flat, "flat");
 
-    gouraud = shaderSetup( "gouraud.vert", "gouraud.frag" );
-    checkShaderError( gouraud, "gouraud" );
+	gouraud = shaderSetup("gouraud.vert", "gouraud.frag");
+	checkShaderError(gouraud, "gouraud");
 
-    phong = shaderSetup( "phong.vert", "phong.frag" );
-    checkShaderError( phong, "phong" );
+	phong = shaderSetup("phong.vert", "phong.frag");
+	checkShaderError(phong, "phong");
 
-    // Default shader program
-    program = flat;
+	// Default shader program
+	program = flat;
 
-    // Create all four objects
-    createShape( OBJ_TORUS, SHADE_FLAT );
-    createShape( OBJ_TORUS, SHADE_NOT_FLAT );
-    createShape( OBJ_TEAPOT, SHADE_FLAT );
-    createShape( OBJ_TEAPOT, SHADE_NOT_FLAT );
+	// Create all four objects
+	createShape(OBJ_TORUS, SHADE_FLAT);
+	createShape(OBJ_TORUS, SHADE_NOT_FLAT);
+	createShape(OBJ_TEAPOT, SHADE_FLAT);
+	createShape(OBJ_TEAPOT, SHADE_NOT_FLAT);
 
-    // Some openGL initialization...probably best to keep
-    glEnable( GL_DEPTH_TEST );
-    glEnable( GL_CULL_FACE );
-    glCullFace( GL_BACK );
-    glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
-    glDepthFunc( GL_LEQUAL );
-    glClearDepth( 1.0f );
+	// Some openGL initialization...probably best to keep
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glDepthFunc(GL_LEQUAL);
+	glClearDepth(1.0f);
 }
 
 
@@ -192,121 +192,123 @@ void init()
 extern "C" {
 #endif
 
-void display( void )
-{
-    // clear and draw params..
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	void display(void)
+	{
+		// clear and draw params..
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // use the correct program
-    glUseProgram( program );
+		// use the correct program
+		glUseProgram(program);
 
-    // set up Phong illumination
-    setUpPhong( program );
-
-    // set up viewing and projection parameters
-    setUpFrustum( program );
-
-    // set up the camera
-    setUpCamera( program,
-        0.2f, 3.0f, 6.5f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f
-    );
-
-    // set up transformations for the torus
-    setUpTransforms( program,
-        2.5f, 2.5f, 2.5f,
-        angles[OBJ_TORUS], angles[OBJ_TORUS], angles[OBJ_TORUS],
-        -1.5f, 0.5f, -1.5f
-    );
-
-    // draw it
-    selectBuffers( program, OBJ_TORUS, currentShader );
-    glDrawElements( GL_TRIANGLES, numVerts[OBJ_TORUS][currentShader],
-        GL_UNSIGNED_SHORT, (void *)0 );
-
-    // set up transformations for the teapot
-    setUpTransforms( program,
-        2.0f, 2.0f, 2.0f,
-        angles[OBJ_TEAPOT], angles[OBJ_TEAPOT], angles[OBJ_TEAPOT],
-        1.5f, 0.5f, -1.5f );
-
-    // draw it
-    selectBuffers( program, OBJ_TEAPOT, currentShader );
-    glDrawElements( GL_TRIANGLES, numVerts[OBJ_TEAPOT][currentShader],
-        GL_UNSIGNED_SHORT, (void *)0 );
-
-    // swap the buffers
-    glutSwapBuffers();
-}
+		// set up Phong illumination
+		setUpPhong(program, 1); // fence
 
 
-void keyboard( unsigned char key, int x, int y )
-{
-    switch( key ) {
+		// set up viewing and projection parameters
+		setUpFrustum(program);
 
-        case '1':    // flat shading
-            program = flat;
-            currentShader = SHADE_FLAT;
-            break;
+		// set up the camera
+		setUpCamera(program,
+			0.2f, 3.0f, 6.5f,
+			0.0f, 1.0f, 0.0f,
+			0.0f, 1.0f, 0.0f
+			);
 
-        case '2':    // Gouraud shading
-            program = gouraud;
-            currentShader = SHADE_NOT_FLAT;
-            break;
+		// set up transformations for the torus
+		setUpTransforms(program,
+			1.0f, 1.0f, 1.0f,
+			-90.0f, 0.0f, 3.0f,
+			0.0f, -2.0f, -3.0f);
 
-        case '3':    // Phong shading
-            program = phong;
-            currentShader = SHADE_NOT_FLAT;
-            break;
+		// draw it
+		selectBuffers(program, OBJ_TORUS, currentShader);
+		glDrawElements(GL_TRIANGLES, numVerts[OBJ_TORUS][currentShader],
+			GL_UNSIGNED_SHORT, (void *)0);
 
-        case 'a':    // animate
-            animating = true;
-            break;
+		setUpPhong(program, 3); // fence
 
-        case 's':    // stop animating
-            animating = false;
-            break;
+		// set up transformations for the teapot
+		setUpTransforms(program,
+			1.2f, 1.2f, 1.2f,
+			-110.0f, 0.0f, -40.0f,
+			1.5f, -0.5f, -1.5f);
 
-        case 033:   // terminate the program
-        case 'q': case 'Q':
-            exit( 0 );
-            break;
-    }
+		// draw it
+		selectBuffers(program, OBJ_TEAPOT, currentShader);
+		glDrawElements(GL_TRIANGLES, numVerts[OBJ_TEAPOT][currentShader],
+			GL_UNSIGNED_SHORT, (void *)0);
 
-    glutPostRedisplay();
-}
+		// swap the buffers
+		glutSwapBuffers();
+	}
 
-// Animate the objects (maybe)
-void animate( void ) {
-    if( animating ) {
-        angles[OBJ_TORUS]  += 2;
-        angles[OBJ_TEAPOT] += 1;
-        glutPostRedisplay();
-    }
-}
+
+	void keyboard(unsigned char key, int x, int y)
+	{
+		switch (key) {
+
+		case '1':    // flat shading
+			program = flat;
+			currentShader = SHADE_FLAT;
+			break;
+
+		case '2':    // Gouraud shading
+			program = gouraud;
+			currentShader = SHADE_NOT_FLAT;
+			break;
+
+		case '3':    // Phong shading
+			program = phong;
+			currentShader = SHADE_NOT_FLAT;
+			break;
+
+		case 'a':    // animate
+			animating = true;
+			break;
+
+		case 's':    // stop animating
+			animating = false;
+			break;
+
+		case 033:   // terminate the program
+		case 'q': case 'Q':
+			exit(0);
+			break;
+		}
+
+		glutPostRedisplay();
+	}
+
+	// Animate the objects (maybe)
+	void animate(void) {
+		if (animating) {
+			angles[OBJ_TORUS] += 2;
+			angles[OBJ_TEAPOT] += 1;
+			glutPostRedisplay();
+		}
+	}
 
 #ifdef __cplusplus
 }
 #endif
 
-int main (int argc, char **argv)
+int main(int argc, char **argv)
 {
-    glutInit( &argc, argv );
-    glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH );
-    glutInitWindowSize( 600, 600 );
-    glutCreateWindow( "CG - Shading Assignment" );
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	glutInitWindowSize(720, 720);
+	glutCreateWindow("CG - Shading Assignment");
 
 #ifndef __APPLE__
-    glewInit();
+	glewInit();
 #endif
 
-    init();
+	init();
 
-    glutDisplayFunc( display );
-    glutKeyboardFunc( keyboard );
-    glutIdleFunc( animate );
+	glutDisplayFunc(display);
+	glutKeyboardFunc(keyboard);
+	glutIdleFunc(animate);
 
-    glutMainLoop();
-    return 0;
+	glutMainLoop();
+	return 0;
 }

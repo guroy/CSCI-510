@@ -17,6 +17,6 @@
 #include <GL/gl.h>
 #endif
 
-void setUpPhong( GLuint program );
+void setUpPhong( GLuint program, int object );
 
 #endif

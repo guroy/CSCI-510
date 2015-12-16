@@ -9,14 +9,20 @@
 #include "lightingParams.h"
 
 // Add any global variables you need here.
-// Material properties of the teapot and torus
-float ambient_color[] = { 0.3f, 0.3f, 0.7f, 1.0f },
-	ambient_reflection_coefficient = 0.5f,
-	diffuse_color[] = { 0.1f, 0.0f, 0.89f, 1.0f },
-	diffuse_reflection_coefficient = 0.7f,
-	specular_color[] = { 1.0f, 1.0f, 1.0f, 1.0f },
-	specular_exponent = 10.0f,
-	specular_reflection_coefficient = 1.0f;
+// Material properties of the objects
+const int N = 4; // number of objects
+/*	0: background
+	1: fence
+	2: ground
+	3: tardis
+*/
+float ambient_color[][N] = { { 0.3f, 0.3f, 0.7f, 1.0f }, { 0.5f, 0.5f, 0.5f, 1.0f }, { 0.9f, 0.3f, 0.3f, 1.0f }, { 0.3f, 0.3f, 0.7f, 1.0f } },
+ambient_reflection_coefficient[N] = { 0.5f, 0.5f, 0.5f, 0.5f },
+diffuse_color[][N] = { { 0.1f, 0.0f, 0.89f, 1.0f }, { 0.3f, 0.3f, 0.3f, 1.0f }, { 0.1f, 0.0f, 0.89f, 1.0f }, { 0.1f, 0.0f, 0.89f, 1.0f } },
+diffuse_reflection_coefficient[N] = { 0.7f, 0.7f, 0.7f, 0.7f },
+specular_color[][N] = { { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f } },
+specular_exponent[N] = { 10.0f, 10.0f, 10.0f, 10.0f },
+specular_reflection_coefficient[N] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 // Properties of the light source
 float lightSourceColor[] = { 1.0f, 1.0f, 0.0f, 1.0f },
@@ -36,7 +42,7 @@ float ambientLightColor[] = { 0.9f, 0.9f, 0.9f, 1.0 };
  *    parameter values are to be sent
  *
  */
-void setUpPhong( GLuint program )
+void setUpPhong( GLuint program, int object )
 {
     // Add your code here.
 	// we basically send each information to the shaders
@@ -48,24 +54,24 @@ void setUpPhong( GLuint program )
 		1, lightSourcePosition);
 	glUniform4fv(
 		glGetUniformLocation(program, "ambient_color"),
-		1, ambient_color);
+		1, ambient_color[object]);
 	glUniform4fv(
 		glGetUniformLocation(program, "diffuse_color"),
-		1, diffuse_color);
+		1, diffuse_color[object]);
 	glUniform4fv(
 		glGetUniformLocation(program, "specular_color"),
-		1, specular_color);
+		1, specular_color[object]);
 
 	glUniform1f(
 		glGetUniformLocation(program, "ambient_reflection_coefficient"),
-		ambient_reflection_coefficient);
+		ambient_reflection_coefficient[object]);
 	glUniform1f(
 		glGetUniformLocation(program, "diffuse_reflection_coefficient"),
-		diffuse_reflection_coefficient);
+		diffuse_reflection_coefficient[object]);
 	glUniform1f(
 		glGetUniformLocation(program, "specular_reflection_coefficient"),
-		specular_reflection_coefficient);
+		specular_reflection_coefficient[object]);
 	glUniform1f(
 		glGetUniformLocation(program, "specular_exponent"),
-		specular_exponent);
+		specular_exponent[object]);
 }

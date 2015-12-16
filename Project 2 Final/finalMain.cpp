@@ -34,6 +34,8 @@
 #include "shapes.h"
 #include "viewParams.h"
 #include "lightingParams.h"
+#include "SOIL.h"
+#include <stdio.h>
 
 #ifdef __cplusplus
 using namespace std;
@@ -51,15 +53,15 @@ using namespace std;
 // row 0:  torus flat    torus non-flat
 // row 1:  teapot flat   teapot non-flat
 //
-GLuint vbuffer[2][2];
-GLuint ebuffer[2][2];
-int    numVerts[2][2];
+GLuint vbuffer[4][4];
+GLuint ebuffer[4][4];
+int    numVerts[4][4];
 
 // Animation flag
 bool animating = false;
 
 // Initial animation rotation angles
-float angles[2] = { 0.0f, 0.0f };
+float angles[3] = { 0.0f, 0.0f, 0.0f };
 
 // Current shader type:  flat vs. non-flat
 int currentShader = SHADE_FLAT;
@@ -173,16 +175,16 @@ void init()
     program = flat;
 
     // Create all four objects
-    createShape( OBJ_TORUS, SHADE_FLAT );
-    createShape( OBJ_TORUS, SHADE_NOT_FLAT );
-    createShape( OBJ_TEAPOT, SHADE_FLAT );
-    createShape( OBJ_TEAPOT, SHADE_NOT_FLAT );
+    createShape( OBJ_FENCE, SHADE_FLAT );
+    createShape( OBJ_FENCE, SHADE_NOT_FLAT );
+    createShape( OBJ_TARDIS, SHADE_FLAT );
+    createShape( OBJ_TARDIS, SHADE_NOT_FLAT );
 
     // Some openGL initialization...probably best to keep
     glEnable( GL_DEPTH_TEST );
     glEnable( GL_CULL_FACE );
     glCullFace( GL_BACK );
-    glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
+    glClearColor( 0.8f, 0.9f, 1.0f, 1.0f );
     glDepthFunc( GL_LEQUAL );
     glClearDepth( 1.0f );
 }
@@ -201,7 +203,7 @@ void display( void )
     glUseProgram( program );
 
     // set up Phong illumination
-    setUpPhong( program );
+    setUpPhong( program, OBJ_FENCE); // fence
 
     // set up viewing and projection parameters
     setUpFrustum( program );
@@ -213,26 +215,42 @@ void display( void )
         0.0f, 1.0f, 0.0f
     );
 
-    // set up transformations for the torus
+    // set up transformations for the fence
     setUpTransforms( program,
 		1.0f, 1.0f, 1.0f,
 		-90.0f, 0.0f, 3.0f,
-		0.0f, -2.0f, -3.0f);
+		0.0f, -2.0f, -2.0f);
 
     // draw it
-    selectBuffers( program, OBJ_TORUS, currentShader );
-    glDrawElements( GL_TRIANGLES, numVerts[OBJ_TORUS][currentShader],
+    selectBuffers( program, OBJ_FENCE, currentShader );
+    glDrawElements( GL_TRIANGLES, numVerts[OBJ_FENCE][currentShader],
         GL_UNSIGNED_SHORT, (void *)0 );
 
-    // set up transformations for the teapot
+
+	setUpPhong(program, OBJ_GROUND); // ground
+
+	// set up transformations for the ground
+	/*setUpTransforms(program,
+		1.0f, 1.0f, 1.0f,
+		-90.0f, 0.0f, 3.0f,
+		0.0f, -2.0f, -2.0f);*/
+
+	// draw it
+	selectBuffers(program, OBJ_GROUND, currentShader);
+	glDrawElements(GL_TRIANGLES, numVerts[OBJ_GROUND][currentShader],
+		GL_UNSIGNED_SHORT, (void *)0);
+
+	setUpPhong(program, OBJ_TARDIS); // tardis
+
+    // set up transformations for the tardis
     setUpTransforms( program,
         1.2f, 1.2f, 1.2f,
         -110.0f, 0.0f, -40.0f,
         1.5f, -0.5f, -1.5f );
 
     // draw it
-    selectBuffers( program, OBJ_TEAPOT, currentShader );
-    glDrawElements( GL_TRIANGLES, numVerts[OBJ_TEAPOT][currentShader],
+    selectBuffers( program, OBJ_TARDIS, currentShader );
+    glDrawElements( GL_TRIANGLES, numVerts[OBJ_TARDIS][currentShader],
         GL_UNSIGNED_SHORT, (void *)0 );
 
     // swap the buffers
@@ -258,31 +276,9 @@ void keyboard( unsigned char key, int x, int y )
             program = phong;
             currentShader = SHADE_NOT_FLAT;
             break;
-
-        case 'a':    // animate
-            animating = true;
-            break;
-
-        case 's':    // stop animating
-            animating = false;
-            break;
-
-        case 033:   // terminate the program
-        case 'q': case 'Q':
-            exit( 0 );
-            break;
     }
 
     glutPostRedisplay();
-}
-
-// Animate the objects (maybe)
-void animate( void ) {
-    if( animating ) {
-        angles[OBJ_TORUS]  += 2;
-        angles[OBJ_TEAPOT] += 1;
-        glutPostRedisplay();
-    }
 }
 
 #ifdef __cplusplus
@@ -304,7 +300,6 @@ int main (int argc, char **argv)
 
     glutDisplayFunc( display );
     glutKeyboardFunc( keyboard );
-    glutIdleFunc( animate );
 
     glutMainLoop();
     return 0;
