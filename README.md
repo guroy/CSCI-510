@@ -62,5 +62,3 @@ Labs
  * At least one light source 
  * Use of at least one texture 
  * Shading on all objects which aren't texture-mapped
-
-![alt_tag](http://s581607514.onlinehome.fr/host/course/cg/final.png)
